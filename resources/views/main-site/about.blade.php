@@ -33,7 +33,39 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
+    <style>
+        .about-video-wrapper {
+            position: relative;
+            width: min(100%, 360px);
+            aspect-ratio: 9 / 16;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+            margin: 0 auto;
+        }
+
+        .about-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .about-video-card {
+            background-color: #fff;
+        }
+
+        @media (max-width: 991px) {
+            .about-video-wrapper {
+                width: min(100%, 320px);
+                margin-top: 20px;
+            }
+        }
+    </style>
 @endpush
 
 @push('scripts')
@@ -96,11 +128,11 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="page-title">
-                            <h1>About Us</h1>
+                            <h1><x-bi en="About Us" ar="عنّا" /></h1>
                         </div>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                            <li class="breadcrumb-item active">About Us</li>
+                            <li class="breadcrumb-item"><a href="{{ route('home') }}"><x-bi en="Home" ar="الرئيسية" /></a></li>
+                            <li class="breadcrumb-item active"><x-bi en="About Us" ar="عنّا" /></li>
                         </ol>
                     </div>
                 </div>
@@ -118,15 +150,23 @@
                         <span class="sub_heading font_style1">About Us</span>
                         <h2>{{ config('site.name') }}</h2>
                     </div>
-                    <p>Welcome to {{ config('site.name') }}, where we bring the vibrant and rich flavors of West African cuisine to your table. Our specialty, Suya, is a smoky, spicy delight that's sure to tantalize your taste buds.</p>
-                    <p>At {{ config('site.name') }}, we are dedicated to serving authentic and innovative dishes crafted from the freshest ingredients. Come experience the best of West African culinary tradition with us!</p>
+                    <p>Welcome to Palombini Cafe, where we bring the heart and soul of authentic Italian cuisine to your table. From handcrafted pasta and wood-fired pizzas to rich risottos and classic desserts, every dish is made to capture the true flavors of Italy.</p>
+                    <p>At Palombini Cafe, we are passionate about using the freshest ingredients, traditional recipes, and a touch of creativity to create an unforgettable dining experience. Join us and savor the warmth, comfort, and elegance of Italian culinary tradition in every bite.</p>
+                    <p dir="rtl" lang="ar">أهلًا بيكم في Palombini Cafe، المكان اللي بنقدملكم فيه روح المطبخ الإيطالي الأصيل على سفرتكم. من الباستا المصنوعة بإيدينا والبيتزا المخبوزة في فرن الحطب، للريزوتو الغني والحلويات الكلاسيكية، كل طبق معمول علشان ينقلكم لطعم إيطاليا الحقيقي.</p>
+                    <p dir="rtl" lang="ar">في Palombini Cafe، إحنا شغوفين باستخدام أحسن المكونات الطازة، والوصفات التقليدية، ولمسة إبداع عشان نصنع تجربة أكل لا تُنسى. انضموا لينا واستمتعوا بدفء وراحة وأناقة تقاليد المطبخ الإيطالي في كل لقمة.</p>
                 </div>
             </div>
             
-        	<div class="col-lg-6">	
-                <div class="fancy_style1 overlay_bg_20">
-                    <img src="/assets/images/about_img5.jpg" alt="about_img5" />
-                    <a href="https://www.youtube.com/watch?v=ZE2HxTmxfrI" class="btn btn-ripple ripple_center video_popup animation" data-animation="fadeInUp" data-animation-delay="0.6s"><span class="ripple"><i class="ion-play"></i></span></a>
+	        <div class="col-lg-6">	
+                <div class="fancy_style1 about-video-card">
+                    <div class="about-video-wrapper">
+                        <iframe
+                            src="https://drive.google.com/file/d/1M59cyFWXC_ngSxFT4G1hAaarCjJWXuYV/preview"
+                            title="Palombini Cafe Video"
+                            allow="autoplay; encrypted-media; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
                 </div>
             </div>
         </div>
@@ -139,10 +179,11 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-8 animation" data-animation="fadeInUp" data-animation-delay="0.02s">
                         <div class="heading_s1 heading_light">
-                            <span class="sub_heading font_style1">Experience the Authentic Flavors</span>
-                            <h2>{{ config('site.name') }}: A Taste of Tradition</h2>
+                            <span class="sub_heading font_style1">Experience Authentic Italian Flavors</span>
+                            <h2>{{ config('site.name') }}: A Taste of Italy</h2>
                         </div>
-                        <p class="text-white">Embark on a culinary journey with {{ config('site.name') }}, where we celebrate the rich and diverse flavors of West Africa. Our signature Suya, crafted with a blend of traditional spices, offers a unique and unforgettable dining experience.</p>
+                        <p class="text-white">Embark on a culinary journey with {{ config('site.name') }}, where we celebrate the timeless flavors of Italy. From handcrafted pasta and wood-fired pizza to rich risottos and classic desserts, every dish is prepared to deliver an unforgettable dining experience.</p>
+                        <p class="text-white" dir="rtl" lang="ar">ابدأوا رحلة أكل مميزة مع {{ config('site.name') }}، حيث نحتفل بنكهات إيطاليا الأصيلة اللي عمرها ما بتقدم. من الباستا المصنوعة بإيدينا والبيتزا في فرن الحطب، للريزوتو الغني والحلويات الكلاسيكية، كل طبق متحضّر علشان يقدّم لكم تجربة لا تُنسى.</p>
                     </div>
                 </div>
             </div>
@@ -154,15 +195,16 @@
 <div class="section pb_70">
     <div class="container">
         <div class="row justify-content-center">
-            <!-- Traditional African Meals -->
+            <!-- Authentic Italian Cuisine -->
             <div class="col-lg-4 col-md-6">
                 <div class="icon_box icon_box_style1 text-center animation" data-animation="fadeInUp" data-animation-delay="0.02s">
                     <div class="icon">
                         <i class="flaticon-dining-table"></i>
                     </div>
                     <div class="icon_box_content">
-                        <h5 class="text-uppercase">Authentic African Cuisine</h5>
-                        <p>Relish the flavors of traditional African meals, lovingly prepared to preserve our rich culinary heritage.</p>
+                        <h5 class="text-uppercase">Authentic Italian Cuisine</h5>
+                        <p>Savor traditional Italian dishes crafted with care to preserve the rich culinary heritage of Italy.</p>
+                        <p dir="rtl" lang="ar">استمتعوا بأطباق إيطالية تقليدية معمولة بعناية للحفاظ على التراث الغني للمطبخ الإيطالي.</p>
                     </div>
                 </div>
             </div>
@@ -174,8 +216,9 @@
                         <i class="flaticon-contact"></i>
                     </div>
                     <div class="icon_box_content">
-                        <h5 class="text-uppercase">Homemade Goodness</h5>
-                        <p>Our meals are prepared with care, blending homemade recipes and fresh ingredients to make you feel right at home.</p>
+                        <h5 class="text-uppercase">Handcrafted Freshness</h5>
+                        <p>Our meals are made with fresh ingredients and time-honored recipes, bringing comfort and quality to every table.</p>
+                        <p dir="rtl" lang="ar">أكلاتنا بتتعمل بمكونات طازة ووصفات متوارثة، علشان نوصل الراحة والجودة لكل ترابيزة.</p>
                     </div>
                 </div>
             </div>
@@ -187,8 +230,9 @@
                         <i class="flaticon-restaurant"></i>
                     </div>
                     <div class="icon_box_content">
-                        <h5 class="text-uppercase">Satisfying Every Bite</h5>
-                        <p>Enjoy meals that are not just delicious but crafted to leave you completely satisfied with every bite.</p>
+                        <h5 class="text-uppercase">Memorable Every Bite</h5>
+                        <p>Enjoy balanced flavors, elegant presentation, and dishes designed to make every bite truly memorable.</p>
+                        <p dir="rtl" lang="ar">استمتعوا بنكهات متوازنة، وتقديم أنيق، وأطباق معمولة علشان كل لقمة تفضل في الذاكرة.</p>
                     </div>
                 </div>
             </div>

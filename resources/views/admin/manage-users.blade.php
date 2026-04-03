@@ -77,8 +77,8 @@
         modal.find('#viewEmail').text(email);
         modal.find('#viewRole').text(role);
         modal.find('#viewStatus').html(status === 1 
-            ? '<span class="badge bg-success"><i class="fa fa-check"></i> Active</span>' 
-            : '<span class="badge bg-danger"><i class="fa fa-exclamation"></i> Banned</span>');
+            ? '<span class="badge bg-success"><i class="fa fa-check"></i> <span class="bi-text"><span class="bi-en">Active</span><span class="bi-ar" dir="rtl" lang="ar">نشط</span></span></span>' 
+            : '<span class="badge bg-danger"><i class="fa fa-exclamation"></i> <span class="bi-text"><span class="bi-en">Banned</span><span class="bi-ar" dir="rtl" lang="ar">محظور</span></span></span>');
         modal.find('#viewPhoneNumber').text(phoneNumber || 'N/A');
         modal.find('#viewAddress').text(address || 'N/A');
     });
@@ -102,23 +102,23 @@
  
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Manage Admin ({{ $users->count() }})</span>
-            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createUserModal">Add Admin</button>
+            <span><x-bi :en="'Manage Staff (' . $users->count() . ')'" :ar="'إدارة الموظفين (' . $users->count() . ')'" /></span>
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createUserModal"><x-bi en="Add Staff" ar="إضافة موظف" /></button>
         </div>
         <div class="card-body">
             @if($users->isEmpty())
                 <div class="alert alert-warning" role="alert">
-                    No admin records found.
+                    <x-bi en="No staff records found." ar="لا توجد سجلات للموظفين." />
                 </div>
             @else
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th><x-bi en="Name" ar="الاسم" /></th>
+                            <th><x-bi en="Email" ar="البريد الإلكتروني" /></th>
+                            <th><x-bi en="Role" ar="الدور" /></th>
+                            <th><x-bi en="Status" ar="الحالة" /></th>
+                            <th><x-bi en="Actions" ar="الإجراءات" /></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -136,36 +136,49 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <button 
-                                    class="btn btn-primary btn-sm" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#viewUserModal" 
-                                    data-first_name="{{ $user->first_name }}" 
-                                    data-middle_name="{{ $user->middle_name }}" 
-                                    data-last_name="{{ $user->last_name }}"
-                                    data-email="{{ $user->email }}"
-                                    data-role="{{ ucwords(str_replace('_', ' ', $user->role)) }}"
-                                    data-status="{{ $user->status }}"
-                                    data-phone-number="{{ $user->phone_number }}"
-                                    data-address="{{ $user->address }}"
-                                    data-profile-picture="{{ $user->profile_picture ? asset('storage/profile-picture/' . $user->profile_picture) : asset('assets/images/user-icon.png') }}"
-                                    > <i class="fa fa-eye"></i>  </button>
+                                    <div class="d-flex align-items-center gap-1">
+                                        <button 
+                                        class="btn btn-primary btn-sm" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#viewUserModal" 
+                                        data-first_name="{{ $user->first_name }}" 
+                                        data-middle_name="{{ $user->middle_name }}" 
+                                        data-last_name="{{ $user->last_name }}"
+                                        data-email="{{ $user->email }}"
+                                        data-role="{{ ucwords(str_replace('_', ' ', $user->role)) }}"
+                                        data-status="{{ $user->status }}"
+                                        data-phone-number="{{ $user->phone_number }}"
+                                        data-address="{{ $user->address }}"
+                                        data-profile-picture="{{ $user->profile_picture ? asset('storage/profile-picture/' . $user->profile_picture) : asset('assets/images/user-icon.png') }}"
+                                        title="View">
+                                        <i class="fa fa-eye"></i>
+                                        </button>
 
-                                    <button 
-                                    class="btn btn-warning btn-sm" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#editUserModal"
-                                    data-id="{{ $user->id }}"
-                                    data-first-name="{{ $user->first_name }}"
-                                    data-middle-name="{{ $user->middle_name }}"
-                                    data-last-name="{{ $user->last_name }}"
-                                    data-email="{{ $user->email }}"
-                                    data-role="{{ $user->role }}"
-                                    data-status="{{ $user->status }}"
-                                    data-notice="{{ $user->notice }}"
-                                    onclick="editUser(this)">
-                                    <i class='fa fa-edit'></i>
-                                    </button>
+                                        <button 
+                                        class="btn btn-warning btn-sm" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#editUserModal"
+                                        data-id="{{ $user->id }}"
+                                        data-first-name="{{ $user->first_name }}"
+                                        data-middle-name="{{ $user->middle_name }}"
+                                        data-last-name="{{ $user->last_name }}"
+                                        data-email="{{ $user->email }}"
+                                        data-role="{{ $user->role }}"
+                                        data-status="{{ $user->status }}"
+                                        data-notice="{{ $user->notice }}"
+                                        onclick="editUser(this)"
+                                        title="Edit">
+                                        <i class='fa fa-edit'></i>
+                                        </button>
+
+                                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this account?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                                            
                                 </td>
                             </tr>
@@ -196,41 +209,42 @@
             <form method="POST" action="{{ route('admin.users.store') }}">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title">Create Admin</h5>
+                    <h5 class="modal-title"><x-bi en="Create Staff" ar="إنشاء موظف" /></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-danger" role="alert">
-                        <i class="fa fa-exclamation-triangle"></i> The password will be the user's email address. The user should log in with this credential and change their password to gain access to the admin panel.
+                        <i class="fa fa-exclamation-triangle"></i> <x-bi en="The temporary password will be the user's email address. Staff can login immediately and should change password after first login." ar="ستكون كلمة المرور المؤقتة هي البريد الإلكتروني للمستخدم. يمكن للموظف تسجيل الدخول مباشرة ويجب تغيير كلمة المرور بعد أول تسجيل دخول." />
                     </div>
                     <div class="mb-3">
-                        <label>First Name</label>
+                        <label><x-bi en="First Name" ar="الاسم الأول" /></label>
                         <input type="text" name="first_name" id="FirstName" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label>Middle Name</label>
+                        <label><x-bi en="Middle Name" ar="الاسم الأوسط" /></label>
                         <input type="text" name="middle_name" id="MiddleName" class="form-control">
                     </div>
                     <div class="mb-3">
-                        <label>Last Name</label>
-                        <input type="text" name="last_name" id="LastName" class="form-control" required>
+                        <label><x-bi en="Last Name" ar="اسم العائلة" /></label>
+                        <input type="text" name="last_name" id="LastName" class="form-control">
                     </div>
                     <div class="mb-3">
-                        <label>Email</label>
+                        <label><x-bi en="Email" ar="البريد الإلكتروني" /></label>
                         <input type="email" name="email" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label>Role</label>
+                        <label><x-bi en="Role" ar="الدور" /></label>
                         <select name="role" class="form-control form-control-sm" required>
-                            <option value="admin">Admin</option>
-                            <option value="global_admin">Global Admin</option>
+                            <option value="admin">Admin / مشرف</option>
+                            <option value="cashier">Cashier / أمين صندوق</option>
+                            <option value="global_admin">Global Admin / مشرف عام</option>
                         </select>
                     </div>
                     
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><x-bi en="Cancel" ar="إلغاء" /></button>
+                    <button type="submit" class="btn btn-primary"><x-bi en="Create" ar="إنشاء" /></button>
                 </div>
             </form>
         </div>
@@ -248,43 +262,44 @@
                 @csrf
                 @method('PUT')
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit User</h5>
+                    <h5 class="modal-title"><x-bi en="Edit User" ar="تعديل المستخدم" /></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label>First Name</label>
+                        <label><x-bi en="First Name" ar="الاسم الأول" /></label>
                         <input type="text" name="first_name" id="editFirstName" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label>Middle Name</label>
+                        <label><x-bi en="Middle Name" ar="الاسم الأوسط" /></label>
                         <input type="text" name="middle_name" id="editMiddleName" class="form-control">
                     </div>
                     <div class="mb-3">
-                        <label>Last Name</label>
+                        <label><x-bi en="Last Name" ar="اسم العائلة" /></label>
                         <input type="text" name="last_name" id="editLastName" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label>Email</label>
+                        <label><x-bi en="Email" ar="البريد الإلكتروني" /></label>
                         <input type="email" name="email" id="editEmail" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label>Role</label>
+                        <label><x-bi en="Role" ar="الدور" /></label>
                         <select name="role" id="editRole" class="form-control form-control-sm form-select" required>
-                            <option value="admin">Admin</option>
-                            <option value="global_admin">Global Admin</option>
+                            <option value="admin">Admin / مشرف</option>
+                            <option value="cashier">Cashier / أمين صندوق</option>
+                            <option value="global_admin">Global Admin / مشرف عام</option>
                         </select>
                     </div>
                     <div class="form-check form-check-flat form-check-primary" id="banCheckboxDiv">
                         <label class="form-check-label" for="banCheckbox">
-                            <input type="checkbox" class="form-check-input" id="banCheckbox" name="ban"> Ban User
+                            <input type="checkbox" class="form-check-input" id="banCheckbox" name="ban"> <x-bi en="Ban User" ar="حظر المستخدم" />
                             <i class="input-helper"></i>
                         </label>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><x-bi en="Cancel" ar="إلغاء" /></button>
+                    <button type="submit" class="btn btn-primary"><x-bi en="Update" ar="تحديث" /></button>
                 </div>
             </form>
         </div>
@@ -299,7 +314,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">View User Details</h5>
+                <h5 class="modal-title"><x-bi en="View User Details" ar="عرض تفاصيل المستخدم" /></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -312,42 +327,42 @@
                 </div>
                 <table class="table table-bordered">
                     <tr>
-                        <th>First Name</th>
+                        <th><x-bi en="First Name" ar="الاسم الأول" /></th>
                         <td id="viewFirstName"></td>
                     </tr>
                     <tr>
-                        <th>Middle Name</th>
+                        <th><x-bi en="Middle Name" ar="الاسم الأوسط" /></th>
                         <td id="viewMiddleName"></td>
                     </tr>
                     <tr>
-                        <th>Last Name</th>
+                        <th><x-bi en="Last Name" ar="اسم العائلة" /></th>
                         <td id="viewLastName"></td>
                     </tr>                    
                     <tr>
-                        <th>Email</th>
+                        <th><x-bi en="Email" ar="البريد الإلكتروني" /></th>
                         <td id="viewEmail"></td>
                     </tr>
                     <tr>
-                        <th>Role</th>
+                        <th><x-bi en="Role" ar="الدور" /></th>
                         <td id="viewRole"></td>
                     </tr>
                     <tr>
-                        <th>Status</th>
+                        <th><x-bi en="Status" ar="الحالة" /></th>
                         <td id="viewStatus"></td>
                     </tr>
                     <tr>
-                        <th>Phone Number</th>
+                        <th><x-bi en="Phone Number" ar="رقم الهاتف" /></th>
                         <td id="viewPhoneNumber"></td>
                     </tr>
                     <tr>
-                        <th>Address</th>
+                        <th><x-bi en="Address" ar="العنوان" /></th>
                         <td id="viewAddress"></td>
                     </tr>
 
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><x-bi en="Close" ar="إغلاق" /></button>
             </div>
         </div>
     </div>

@@ -41,6 +41,8 @@
 
 <script>
     $(document).ready(function () {
+        const biLabel = (en, ar) => `<span class="bi-text"><span class="bi-en">${en}</span><span class="bi-ar" dir="rtl" lang="ar">${ar}</span></span>`;
+
         // Phone Number Modal
         function resetPhoneNumberModal() {
             $('#phoneNumberForm')[0].reset();
@@ -50,7 +52,7 @@
 
         window.createPhoneNumber = function () {
             resetPhoneNumberModal();
-            $('#phoneNumberModalLabel').text('Add Phone Number');
+            $('#phoneNumberModalLabel').html(biLabel('Add Phone Number', 'إضافة رقم هاتف'));
         };
 
         window.editPhoneNumber = function (id, phoneNumber, useWhatsapp) {
@@ -60,7 +62,7 @@
             let actionUrl = "{{ route('admin.phone-number.update', ':id') }}".replace(':id', id);
             $('#phoneNumberForm').attr('action', actionUrl);
             $('#phoneNumberFormMethod').val('PUT');
-            $('#phoneNumberModalLabel').text('Edit Phone Number');
+            $('#phoneNumberModalLabel').html(biLabel('Edit Phone Number', 'تعديل رقم الهاتف'));
         };
 
         // Address Modal
@@ -71,12 +73,12 @@
             $('#addressForm').attr('action', "{{ route('admin.address.store') }}");
             $('#addressFormMethod').val('');
 
-            $('#addressModalLabel').text('Add Address');
+            $('#addressModalLabel').html(biLabel('Add Address', 'إضافة عنوان'));
         }
 
         window.createAddress = function () {
             resetAddressModal();
-            $('#addressModalLabel').text('Add Address');
+            $('#addressModalLabel').html(biLabel('Add Address', 'إضافة عنوان'));
         };
 
         window.editAddress = function (button) {
@@ -108,7 +110,7 @@
             let actionUrl = "{{ route('admin.address.update', ':id') }}".replace(':id', id);
             $('#addressForm').attr('action', actionUrl);
             $('#addressFormMethod').val('PUT');
-            $('#addressModalLabel').text('Edit Address');
+            $('#addressModalLabel').html(biLabel('Edit Address', 'تعديل العنوان'));
         };
 
         // Working Hour Modal
@@ -122,7 +124,7 @@
 
         window.createWorkingHour = function () {
             resetWorkingHourModal();
-            $('#workingHourModalLabel').text('Add Working Hour');
+            $('#workingHourModalLabel').html(biLabel('Add Working Hour', 'إضافة ساعات عمل'));
         };
 
         window.editWorkingHour = function (button) {
@@ -145,7 +147,7 @@
             let actionUrl = "{{ route('admin.working-hour.update', ':id') }}".replace(':id', id);
             $('#workingHourForm').attr('action', actionUrl);
             $('#workingHourFormMethod').val('PUT');
-            $('#workingHourModalLabel').text('Edit Working Hour');
+            $('#workingHourModalLabel').html(biLabel('Edit Working Hour', 'تعديل ساعات العمل'));
         };
 
         function toggleWorkingHourTimeInputs(isClosed) {
@@ -168,7 +170,7 @@
 
         window.createSocialMediaHandle = function () {
             resetSocialMediaModal();
-            $('#socialMediaModalLabel').text('Add Social Media Handle');
+            $('#socialMediaModalLabel').html(biLabel('Add Social Media Handle', 'إضافة معرّف وسائل التواصل'));
         };
 
         window.editSocialMediaHandle = function (id, handle, socialMedia) {
@@ -178,7 +180,7 @@
             let actionUrl = "{{ route('admin.social-media-handles.update', ':id') }}".replace(':id', id);
             $('#socialMediaForm').attr('action', actionUrl);
             $('#socialMediaFormMethod').val('PUT');
-            $('#socialMediaModalLabel').text('Edit Social Media Handle');
+            $('#socialMediaModalLabel').html(biLabel('Edit Social Media Handle', 'تعديل معرّف وسائل التواصل'));
         };      
 
         // Phone Number Delete
@@ -331,7 +333,7 @@
 
  
       <hr/>
-      <h1>General Settings</h1>
+    <h1><x-bi en="General Settings" ar="الإعدادات العامة" /></h1>
       
 
 
@@ -342,17 +344,17 @@
             <!-- Phone Numbers -->
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Restaurant Phone Numbers</span>
+                    <span><x-bi en="Restaurant Phone Numbers" ar="أرقام هاتف المطعم" /></span>
                     <button class="btn-sm btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneNumberModal" onclick="createPhoneNumber()">
-                        <i class="fa fa-plus"></i> Add Phone Number
+                        <i class="fa fa-plus"></i> <x-bi en="Add Phone Number" ar="إضافة رقم هاتف" />
                     </button>
                 </div>
                 <div class="card-body">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th class="col-8">Phone Number</th>
-                                <th class="col-4 text-end">Actions</th>
+                                <th class="col-8"><x-bi en="Phone Number" ar="رقم الهاتف" /></th>
+                                <th class="col-4 text-end"><x-bi en="Actions" ar="الإجراءات" /></th>
                             </tr>
                         </thead>
                         <tbody id="phoneNumbersTable">
@@ -376,7 +378,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="2" class="text-center">No phone numbers available. Please add a new phone number.</td>
+                                    <td colspan="2" class="text-center"><x-bi en="No phone numbers available. Please add a new phone number." ar="لا توجد أرقام هاتف متاحة. يرجى إضافة رقم هاتف جديد." /></td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -390,17 +392,17 @@
             <!-- Addresses -->
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Restaurant Addresses</span>
+                    <span><x-bi en="Restaurant Addresses" ar="عناوين المطعم" /></span>
                     <button class="btn-sm btn btn-primary" data-bs-toggle="modal" data-bs-target="#addressModal" onclick="createAddress()">
-                        <i class="fa fa-plus"></i> Add Address
+                        <i class="fa fa-plus"></i> <x-bi en="Add Address" ar="إضافة عنوان" />
                     </button>
                 </div>
                 <div class="card-body">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th class="col-8">Address</th>
-                                <th class="col-4 text-end">Actions</th>
+                                <th class="col-8"><x-bi en="Address" ar="العنوان" /></th>
+                                <th class="col-4 text-end"><x-bi en="Actions" ar="الإجراءات" /></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -443,7 +445,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="2" class="text-center">No addresses available. Please add a new address.</td>
+                                <td colspan="2" class="text-center"><x-bi en="No addresses available. Please add a new address." ar="لا توجد عناوين متاحة. يرجى إضافة عنوان جديد." /></td>
                             </tr>
                         @endforelse
 
@@ -460,18 +462,18 @@
             <!-- Social Media Handles -->
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Social Media Handles</span>
+                    <span><x-bi en="Social Media Handles" ar="معرّفات وسائل التواصل" /></span>
                     <button class="btn-sm btn btn-primary" data-bs-toggle="modal" data-bs-target="#socialMediaModal" onclick="createSocialMediaHandle()">
-                        <i class="fa fa-plus"></i> Add Handle
+                        <i class="fa fa-plus"></i> <x-bi en="Add Handle" ar="إضافة معرّف" />
                     </button>
                 </div>
                 <div class="card-body">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Handle</th>
-                                <th>Social Media</th>
-                                <th>Actions</th>
+                                <th><x-bi en="Handle" ar="المعرّف" /></th>
+                                <th><x-bi en="Social Media" ar="وسائل التواصل" /></th>
+                                <th><x-bi en="Actions" ar="الإجراءات" /></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -500,7 +502,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="3" class="text-center">No social media handles available. Please add new handles.</td>
+                                    <td colspan="3" class="text-center"><x-bi en="No social media handles available. Please add new handles." ar="لا توجد معرّفات وسائل تواصل متاحة. يرجى إضافة معرّفات جديدة." /></td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -513,20 +515,20 @@
             <!-- Working Hours -->
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Restaurant Working Hours</span>
+                    <span><x-bi en="Restaurant Working Hours" ar="ساعات عمل المطعم" /></span>
                     <button class="btn-sm btn btn-primary" data-bs-toggle="modal" data-bs-target="#workingHourModal" onclick="createWorkingHour()">
-                        <i class="fa fa-plus"></i> Add Working Hours
+                        <i class="fa fa-plus"></i> <x-bi en="Add Working Hours" ar="إضافة ساعات عمل" />
                     </button>
                 </div>
                 <div class="card-body">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Day</th>
-                                <th>Opens At</th>
-                                <th>Closes At</th>
-                                <th>Status</th>
-                                <th class="text-end">Actions</th>
+                                <th><x-bi en="Day" ar="اليوم" /></th>
+                                <th><x-bi en="Opens At" ar="يفتح عند" /></th>
+                                <th><x-bi en="Closes At" ar="يغلق عند" /></th>
+                                <th><x-bi en="Status" ar="الحالة" /></th>
+                                <th class="text-end"><x-bi en="Actions" ar="الإجراءات" /></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -549,9 +551,9 @@
                                     </td>
                                     <td>
                                         @if($workingHour->is_closed)
-                                            <span class="badge bg-danger">Closed</span>
+                                            <span class="badge bg-danger"><x-bi en="Closed" ar="مغلق" /></span>
                                         @else
-                                            <span class="badge bg-success">Open</span>
+                                            <span class="badge bg-success"><x-bi en="Open" ar="مفتوح" /></span>
                                         @endif
                                     </td>
                                     <td class="text-end">
@@ -578,7 +580,7 @@
                             @empty
                                 <tr>
                                     <td colspan="5" class="text-center">
-                                        No working hours available. Please add new working hours.
+                                        <x-bi en="No working hours available. Please add new working hours." ar="لا توجد ساعات عمل متاحة. يرجى إضافة ساعات عمل جديدة." />
                                     </td>
                                 </tr>
                             @endforelse
@@ -599,7 +601,11 @@
             <form method="POST" action="{{ $script ? route('admin.livechat.update', $script->id) : route('admin.livechat.store') }}">
                 <div class="card">
                     <div class="card-header">
-                        <span>{{ $script ? 'Edit Live Chat Script' : 'Add Live Chat Script' }}</span>
+                        @if($script)
+                            <span><x-bi en="Edit Live Chat Script" ar="تعديل سكربت الدردشة المباشرة" /></span>
+                        @else
+                            <span><x-bi en="Add Live Chat Script" ar="إضافة سكربت دردشة مباشرة" /></span>
+                        @endif
                     </div>
                     <div class="card-body">
                         @csrf
@@ -621,10 +627,10 @@
                     </div>
                     <div class="card-footer d-flex justify-content-between mt-4">
                         @if($script)
-                            <button type="submit" class="btn btn-primary">Update</button>
-                            <button type="button" class="btn btn-danger" onclick="if(confirm('Are you sure you want to delete this script?')) { document.getElementById('form-delete-livechat').submit(); }">Remove Live Chat</button>
+                            <button type="submit" class="btn btn-primary"><x-bi en="Update" ar="تحديث" /></button>
+                            <button type="button" class="btn btn-danger" onclick="if(confirm('Are you sure you want to delete this script?')) { document.getElementById('form-delete-livechat').submit(); }"><x-bi en="Remove Live Chat" ar="إزالة الدردشة المباشرة" /></button>
                         @else
-                            <button type="submit" class="btn btn-primary">Add Live Chat</button>
+                            <button type="submit" class="btn btn-primary"><x-bi en="Add Live Chat" ar="إضافة دردشة مباشرة" /></button>
                         @endif
                     </div>
                 </div>
@@ -640,7 +646,7 @@
  
         <div class="card">
             <div class="card-header">
-                Other Settings
+                <x-bi en="Other Settings" ar="إعدادات أخرى" />
             </div>
 
             <form action="{{ route('site-settings.save') }}" method="POST" style="display: contents;">
@@ -654,7 +660,7 @@
                         <tbody>
                             {{-- Country Selection --}}
                             <tr>
-                                <td><strong>Country</strong></td>
+                                <td><strong><x-bi en="Country" ar="الدولة" /></strong></td>
                                 <td>
                                     <select required class="form-control" id="country_id" name="country_id">
                                         <option value="" disabled {{ empty($site_settings?->country) ? 'selected' : '' }}>
@@ -677,7 +683,7 @@
 
                             {{-- Currency Details (display only) --}}
                             <tr>
-                                <td><strong>Currency Symbol</strong></td>
+                                <td><strong><x-bi en="Currency Symbol" ar="رمز العملة" /></strong></td>
                                 <td>
                                     <input
                                         value="{!! $site_settings->currency_symbol ?? '' !!}"
@@ -690,7 +696,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><strong>Currency Code</strong></td>
+                                <td><strong><x-bi en="Currency Code" ar="رمز العملة" /></strong></td>
                                 <td>
                                     <input
                                         value="{{ $site_settings->currency_code ?? '' }}"
@@ -707,7 +713,7 @@
                 </div>
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary"><x-bi en="Save" ar="حفظ" /></button>
                 </div>
             </form>
         </div>
@@ -721,23 +727,23 @@
 
       <div class="card mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Customer Order Settings</span>
+                        <span><x-bi en="Customer Order Settings" ar="إعدادات طلبات العملاء" /></span>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.order-settings.update') }}" method="POST">
                 @csrf
     
                 <div class="form-group">
-                    <label for="price_per_mile">Price per Mile ({!! $site_settings->currency_symbol !!})</label>
+                    <label for="price_per_mile"><x-bi :en="'Price per Mile (' . $site_settings->currency_symbol . ')'" :ar="'السعر لكل ميل (' . $site_settings->currency_symbol . ')'" /></label>
                     <input type="number" name="price_per_mile" id="price_per_mile" class="form-control" value="{{ $order_settings->price_per_mile ?? '' }}" step="0.01" required>
                 </div>
     
                 <div class="form-group">
-                    <label for="distance_limit_in_miles">Distance Limit in Miles</label>
+                    <label for="distance_limit_in_miles"><x-bi en="Distance Limit in Miles" ar="حد المسافة بالأميال" /></label>
                     <input type="number" name="distance_limit_in_miles" id="distance_limit_in_miles" class="form-control" value="{{ $order_settings->distance_limit_in_miles ?? '' }}" required>
                 </div>
     
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary"><x-bi en="Save" ar="حفظ" /></button>
             </form>
         </div>
     </div>
@@ -754,16 +760,16 @@
                 @csrf
                 <input type="hidden" id="socialMediaFormMethod" name="_method" value="">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="socialMediaModalLabel">Social Media Handle</h5>
+                    <h5 class="modal-title" id="socialMediaModalLabel"><x-bi en="Social Media Handle" ar="معرّف وسائل التواصل" /></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> <i class="fas fa-times"></i></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="handle" class="form-label">Handle</label>
+                        <label for="handle" class="form-label"><x-bi en="Handle" ar="المعرّف" /></label>
                         <input type="text" class="form-control" id="handle" name="handle" required>
                     </div>
                     <div class="mb-3">
-                        <label for="social_media" class="form-label">Social Media</label>
+                        <label for="social_media" class="form-label"><x-bi en="Social Media" ar="وسائل التواصل" /></label>
                         <select class="form-control" id="social_media" name="social_media" required>
                             <option value="facebook">Facebook</option>
                             <option value="instagram">Instagram</option>
@@ -773,8 +779,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><x-bi en="Save" ar="حفظ" /></button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><x-bi en="Cancel" ar="إلغاء" /></button>
                 </div>
             </form>
         </div>
@@ -793,12 +799,12 @@
                     @csrf
                     <input type="hidden" id="phoneNumberFormMethod" name="_method" value="">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="phoneNumberModalLabel">Phone Number</h5>
+                        <h5 class="modal-title" id="phoneNumberModalLabel"><x-bi en="Phone Number" ar="رقم الهاتف" /></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> <i class="fas fa-times"></i></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="phone_number" class="form-label">Phone Number</label>
+                            <label for="phone_number" class="form-label"><x-bi en="Phone Number" ar="رقم الهاتف" /></label>
                             <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Example: +44 123 456 7654" required>
                         </div>
 
@@ -807,14 +813,14 @@
                         <div class="form-check form-check-flat form-check-primary">
 
                             <label class="form-check-label" for="use_whatsapp">
-                            <input type="checkbox" class="form-check-input"  id="use_whatsapp" name="use_whatsapp" value="1">  Use WhatsApp <i class="input-helper"></i>
+                            <input type="checkbox" class="form-check-input"  id="use_whatsapp" name="use_whatsapp" value="1">  <x-bi en="Use WhatsApp" ar="استخدام واتساب" /> <i class="input-helper"></i>
                             </label>
                         
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary"><x-bi en="Save" ar="حفظ" /></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><x-bi en="Cancel" ar="إلغاء" /></button>
                     </div>
                 </form>
             </div>
@@ -836,7 +842,7 @@
                 <input type="hidden" id="addressFormMethod" name="_method" value="">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addressModalLabel">Address</h5>
+                    <h5 class="modal-title" id="addressModalLabel"><x-bi en="Address" ar="العنوان" /></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fas fa-times"></i>
                     </button>
@@ -844,7 +850,7 @@
 
                 <div class="modal-body">
                      <div class="mb-3">
-                        <label for="address" class="form-label">Search Address</label>
+                        <label for="address" class="form-label"><x-bi en="Search Address" ar="البحث عن العنوان" /></label>
                         <input type="text"
                                class="form-control"
                                id="address"
@@ -855,32 +861,32 @@
                     </div>
 
                      <div class="mb-2">
-                        <label for="line1" class="form-label">Street</label>
+                        <label for="line1" class="form-label"><x-bi en="Street" ar="الشارع" /></label>
                         <input type="text" class="form-control" id="line1" name="line1" readonly>
                     </div>
 
                     <div class="mb-2">
-                        <label for="line2" class="form-label">Apt / Suite</label>
+                        <label for="line2" class="form-label"><x-bi en="Apt / Suite" ar="الشقة / الجناح" /></label>
                         <input type="text" class="form-control" id="line2" name="line2" readonly>
                     </div>
 
                     <div class="mb-2">
-                        <label for="city" class="form-label">City</label>
+                        <label for="city" class="form-label"><x-bi en="City" ar="المدينة" /></label>
                         <input type="text" class="form-control" id="city" name="city" readonly>
                     </div>
 
                     <div class="mb-2">
-                        <label for="state" class="form-label">State / Province</label>
+                        <label for="state" class="form-label"><x-bi en="State / Province" ar="الولاية / المقاطعة" /></label>
                         <input type="text" class="form-control" id="state" name="state" readonly>
                     </div>
 
                     <div class="mb-2">
-                        <label for="postal_code" class="form-label">Postal Code</label>
+                        <label for="postal_code" class="form-label"><x-bi en="Postal Code" ar="الرمز البريدي" /></label>
                         <input type="text" class="form-control" id="postal_code" name="postal_code" readonly>
                     </div>
 
                     <div class="mb-2">
-                        <label for="country" class="form-label">Country</label>
+                        <label for="country" class="form-label"><x-bi en="Country" ar="الدولة" /></label>
                         <input type="text" class="form-control" id="country" name="country" readonly>
                     </div>
 
@@ -889,8 +895,8 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><x-bi en="Save" ar="حفظ" /></button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><x-bi en="Cancel" ar="إلغاء" /></button>
                 </div>
             </form>
         </div>
@@ -906,7 +912,7 @@
                 <input type="hidden" id="workingHourFormMethod" name="_method" value="">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="workingHourModalLabel">Working Hour</h5>
+                    <h5 class="modal-title" id="workingHourModalLabel"><x-bi en="Working Hour" ar="ساعات العمل" /></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fas fa-times"></i>
                     </button>
@@ -915,7 +921,7 @@
                 <div class="modal-body">
                     {{-- Day of Week --}}
                     <div class="mb-3">
-                        <label for="day_of_week" class="form-label">Day of Week</label>
+                        <label for="day_of_week" class="form-label"><x-bi en="Day of Week" ar="اليوم" /></label>
                         <select class="form-control" id="day_of_week" name="day_of_week" required>
                             <option value="" disabled selected>Select day</option>
                             <option value="Monday">Monday</option>
@@ -930,13 +936,13 @@
 
                     {{-- Opens At --}}
                     <div class="mb-3">
-                        <label for="opens_at" class="form-label">Opens At</label>
+                        <label for="opens_at" class="form-label"><x-bi en="Opens At" ar="يفتح عند" /></label>
                         <input type="time" class="form-control" id="opens_at" name="opens_at">
                     </div>
 
                     {{-- Closes At --}}
                     <div class="mb-3">
-                        <label for="closes_at" class="form-label">Closes At</label>
+                        <label for="closes_at" class="form-label"><x-bi en="Closes At" ar="يغلق عند" /></label>
                         <input type="time" class="form-control" id="closes_at" name="closes_at">
                     </div>
 
@@ -944,14 +950,14 @@
                     <div class="form-check form-check-flat form-check-primary">
                         <label class="form-check-label" for="is_closed">
                             <input type="checkbox" class="form-check-input" id="is_closed" name="is_closed" value="1">
-                            Closed all day <i class="input-helper"></i>
+                            <x-bi en="Closed all day" ar="مغلق طوال اليوم" /> <i class="input-helper"></i>
                         </label>
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><x-bi en="Save" ar="حفظ" /></button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><x-bi en="Cancel" ar="إلغاء" /></button>
                 </div>
             </form>
         </div>
@@ -973,15 +979,15 @@
                     @csrf
                     @method('DELETE')
                     <div class="modal-header">
-                        <h5 class="modal-title" id="deletePhoneNumberModalLabel">Delete Phone Number</h5>
+                        <h5 class="modal-title" id="deletePhoneNumberModalLabel"><x-bi en="Delete Phone Number" ar="حذف رقم الهاتف" /></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> <i class="fas fa-times"></i></button>
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to delete this phone number?
+                        <x-bi en="Are you sure you want to delete this phone number?" ar="هل أنت متأكد أنك تريد حذف رقم الهاتف هذا؟" />
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger"><x-bi en="Delete" ar="حذف" /></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><x-bi en="Cancel" ar="إلغاء" /></button>
                     </div>
                 </form>
             </div>
@@ -998,15 +1004,15 @@
                     @csrf
                     @method('DELETE')
                     <div class="modal-header">
-                        <h5 class="modal-title" id="deleteAddressModalLabel">Delete Address</h5>
+                        <h5 class="modal-title" id="deleteAddressModalLabel"><x-bi en="Delete Address" ar="حذف العنوان" /></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> <i class="fas fa-times"></i></button>
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to delete this address?
+                        <x-bi en="Are you sure you want to delete this address?" ar="هل أنت متأكد أنك تريد حذف هذا العنوان؟" />
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger"><x-bi en="Delete" ar="حذف" /></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><x-bi en="Cancel" ar="إلغاء" /></button>
                     </div>
                 </form>
             </div>
@@ -1027,15 +1033,15 @@
                     @csrf
                     @method('DELETE')
                     <div class="modal-header">
-                        <h5 class="modal-title" id="deleteWorkingHourModalLabel">Delete Working Hour</h5>
+                        <h5 class="modal-title" id="deleteWorkingHourModalLabel"><x-bi en="Delete Working Hour" ar="حذف ساعات العمل" /></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> <i class="fas fa-times"></i></button>
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to delete this working hour?
+                        <x-bi en="Are you sure you want to delete this working hour?" ar="هل أنت متأكد أنك تريد حذف ساعات العمل هذه؟" />
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger"><x-bi en="Delete" ar="حذف" /></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><x-bi en="Cancel" ar="إلغاء" /></button>
                     </div>
                 </form>
             </div>
@@ -1050,15 +1056,15 @@
                     @csrf
                     @method('DELETE')
                     <div class="modal-header">
-                        <h5 class="modal-title" id="deleteAddressModalLabel">Delete social media handle</h5>
+                        <h5 class="modal-title" id="deleteAddressModalLabel"><x-bi en="Delete Social Media Handle" ar="حذف معرّف وسائل التواصل" /></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> <i class="fas fa-times"></i></button>
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to delete this social media handle?
+                        <x-bi en="Are you sure you want to delete this social media handle?" ar="هل أنت متأكد أنك تريد حذف معرّف وسائل التواصل هذا؟" />
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger"><x-bi en="Delete" ar="حذف" /></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><x-bi en="Cancel" ar="إلغاء" /></button>
                     </div>
                 </form>
             </div>

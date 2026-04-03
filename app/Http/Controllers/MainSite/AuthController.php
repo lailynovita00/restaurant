@@ -94,8 +94,13 @@ class AuthController extends Controller
          $user->activation_token = $token;
          $user->save();
  
-         // Send activation link email
-         Mail::to($user->email)->send(new ActivationLinkEmail($user, $token));
+         try {
+             // Send activation link email
+             Mail::to($user->email)->send(new ActivationLinkEmail($user, $token));
+         } catch (\Throwable $e) {
+             $errorMessage = 'Unable to send activation email right now. Please contact admin support. Mail error: ' . $e->getMessage();
+             return redirect()->route('auth.login')->withErrors(['email' => $errorMessage]);
+         }
  
          return view('auth.activation-link-sent', ['email' => $user->email]);
      }
@@ -210,7 +215,7 @@ class AuthController extends Controller
 
     private function getDashboardRoute(User $user): string
     {
-        return in_array($user->role, ['admin', 'global_admin']) 
+        return in_array($user->role, ['admin', 'cashier', 'global_admin']) 
             ? 'admin.dashboard' 
             : 'home';
     }

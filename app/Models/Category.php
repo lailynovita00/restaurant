@@ -9,10 +9,25 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'name_ar', 'requires_sauce', 'requires_side'];
+
+    protected $casts = [
+        'requires_sauce' => 'boolean',
+        'requires_side' => 'boolean',
+    ];
 
     public function menus()
     {
         return $this->hasMany(Menu::class);
+    }
+
+    public function sauces()
+    {
+        return $this->belongsToMany(Sauce::class)->withTimestamps();
+    }
+
+    public function sides()
+    {
+        return $this->belongsToMany(Side::class)->withTimestamps();
     }
 }

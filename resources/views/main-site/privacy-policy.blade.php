@@ -33,7 +33,7 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
 @endpush
 
 @push('scripts')

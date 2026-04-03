@@ -34,7 +34,7 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
 
 
     <style>
@@ -122,11 +122,11 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="page-title">
-                        <h1>Contact</h1>
+                        <h1><x-bi en="Contact" ar="اتصل بنا" /></h1>
                     </div>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Contact</li>
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}"><x-bi en="Home" ar="الرئيسية" /></a></li>
+                        <li class="breadcrumb-item active"><x-bi en="Contact" ar="اتصل بنا" /></li>
                     </ol>
                 </div>
             </div>
@@ -145,11 +145,7 @@
                         </div>
                         <div class="contact_text">
                             <span>Address</span>
-                            @forelse($addresses as $address)
-                                <p>{{ $address->full_address }}</p>
-                            @empty
-                                <p>No addresses available.</p>
-                            @endforelse
+                            <p>{{ config('site.address') }}</p>
                         </div>
                     </div>
                 </div>
@@ -171,11 +167,7 @@
                         </div>
                         <div class="contact_text">
                             <span>Phone</span>
-                            @forelse($phoneNumbers as $phoneNumber)
-                                <p>{{ $phoneNumber->phone_number }}</p>
-                            @empty
-                                <p>No phone numbers available.</p>
-                            @endforelse
+                            <p>{{ config('site.phone') }}</p>
                         </div>
                     </div>
                 </div>
@@ -232,15 +224,13 @@
                 
                 <div class="col-lg-6 animation mt-4 mt-lg-0" data-animation="fadeInUp" data-animation-delay="0.3s">
                     <div class="map">
-                        @if($firstCompanyAddress)
                         <iframe 
-                            src="https://maps.google.com/maps?q={{ urlencode($firstCompanyAddress->full_address) }}&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+                            src="https://maps.google.com/maps?q={{ urlencode(config('site.address')) }}&t=&z=13&ie=UTF8&iwloc=&output=embed" 
                             width="600" 
                             style="border:0; height:380px;" 
                             allowfullscreen="" 
                             loading="lazy">
                         </iframe>
-                        @endif
                     </div>
                 </div>
             </div>

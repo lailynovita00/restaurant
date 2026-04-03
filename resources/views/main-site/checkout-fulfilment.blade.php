@@ -22,7 +22,7 @@
     <link href="/assets/css/mdtimepicker.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
 
     <!-- Page styles -->
     <style>
@@ -117,7 +117,7 @@
     </script>
 @endpush
 
-@section('title', 'Choose Delivery Method')
+@section('title', 'Fulfilment Method')
 
 @section('header')
     <!-- START HEADER -->
@@ -139,7 +139,7 @@
       <div class="row justify-content-center">
         <div class="col-12 col-lg-6 mx-auto">
           <div class="order_review">
-            <h4 class="mb-4">Choose Delivery Method</h4>
+            <h4 class="mb-4"><x-bi en="Choose Fulfilment Method" ar="اختر طريقة الاستلام" /></h4>
             <hr>
             @include('partials.message-bag')
 
@@ -153,23 +153,23 @@
               <div class="option-card focus-ring {{ $selected === 'pickup' ? 'active' : '' }}"
                    data-value="pickup" tabindex="0" role="button" aria-pressed="{{ $selected === 'pickup' ? 'true' : 'false' }}">
                 <div class="checkmark">{!! $selected === 'pickup' ? '&#10003;' : '' !!}</div>
-                <h6 class="option-title">Pick Up from Store</h6>
-                <p class="option-sub">Collect your order at any of our available pickup locations.</p>
+                <h6 class="option-title"><x-bi en="Pick Up from Store" ar="استلام من الفرع" /></h6>
+                <p class="option-sub"><x-bi en="Collect your order at any of our available pickup locations." ar="استلم طلبك من أي نقطة استلام متاحة." /></p>
               </div>
 
               <div class="option-card focus-ring {{ $selected === 'delivery' ? 'active' : '' }}"
                    data-value="delivery" tabindex="0" role="button" aria-pressed="{{ $selected === 'delivery' ? 'true' : 'false' }}">
                 <div class="checkmark">{!! $selected === 'delivery' ? '&#10003;' : '' !!}</div>
-                <h6 class="option-title">Deliver to My Address</h6>
-                <p class="option-sub">Have your order delivered to your saved or new address.</p>
+                <h6 class="option-title"><x-bi en="Deliver to My Address" ar="توصيل لعنواني" /></h6>
+                <p class="option-sub"><x-bi en="Have your order delivered to your saved or new address." ar="خلّي طلبك يوصلك لعنوان محفوظ أو عنوان جديد." /></p>
               </div>
             </div>
 
             <div class="form-group col-md-12 mt-4 p-0">
-              <button type="submit" class="btn btn-default btn-block">Continue</button>
+              <button type="submit" class="btn btn-default btn-block"><x-bi en="Continue" ar="متابعة" /></button>
             </div>
             <div class="form-group col-md-12 p-0">
-              <a href="{{ route('customer.checkout.details') }}" class="btn btn-default btn-block">Back</a>
+              <a href="{{ route('customer.checkout.details') }}" class="btn btn-default btn-block"><x-bi en="Back" ar="رجوع" /></a>
             </div>
           </div>
         </div>

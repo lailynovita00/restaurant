@@ -34,7 +34,7 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
 @endpush
 
 @push('scripts')
@@ -107,11 +107,11 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="page-title">
-            		<h1>Product Detail</h1>
+					<h1><x-bi en="Product Detail" ar="تفاصيل المنتج" /></h1>
                 </div>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Product Detail</li>
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}"><x-bi en="Home" ar="الرئيسية" /></a></li>
+                    <li class="breadcrumb-item active"><x-bi en="Product Detail" ar="تفاصيل المنتج" /></li>
                 </ol>
             </div>
         </div>
@@ -125,15 +125,15 @@
 		<div class="row">
             <div class="col-lg-6 col-md-6 mb-4 mb-md-0">
               <div class="product-image">
-                    <img src='{{ asset('storage/' . $menu->image) }}' alt="product_img1" />
+                    <img src='{{ $menu->image_url }}' alt="product_img1" />
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="pr_detail">
                     <div class="product_description">
-                        <h4 class="product_title"><a href="#">{{ $menu->name }}</a></h4>
+                        <h4 class="product_title"><a href="#">{{ $menu->name }} @if($menu->name_ar) / {{ $menu->name_ar }} @endif</a></h4>
                         <div class="product_price"> 
-                            <span class="price">{!! $site_settings->currency_symbol !!}{{ number_format($menu->price, 2) }}</span> 
+                            <span class="price">{{ number_format($menu->price, 2) }} {!! $site_settings->currency_symbol !!}</span> 
                         </div>
                         <div class="rating_wrap">
                                 <div class="rating">
@@ -144,30 +144,91 @@
                             <br/>
                             <hr/>
                         <div class="pr_desc">
-                            <p>{{ $menu->description  }}</p>
+                            <p>{{ $menu->description }} @if($menu->description_ar)<br>{{ $menu->description_ar }}@endif</p>
                         </div>
                         <ul class="product-meta">
-                            <li>Category:  {{ $menu->category->name }}</li>
+                            <li>
+                                Category: {{ $menu->category->name }}
+                                @if($menu->category && $menu->category->name_ar)
+                                    / <span dir="rtl" lang="ar">{{ $menu->category->name_ar }}</span>
+                                @endif
+                            </li>
                         </ul>
                     </div>
                     <hr />
-                    <div class="cart_extra">
-                        <div class="cart-product-quantity">
-                            <div class="quantity {{ $quantity==0? 'd-none':'' }}"  >
-                                <input type="button" value="-" class="minus">
-                                <input type="text" min="0" name="quantity" value="{{ $quantity }}" title="Qty" class="qty quantity-input" size="4" data-id="{{ $menu->id }}">
-                                <input type="button" value="+" class="plus">
-                            </div>
+                    @if($menu->category && $menu->category->requires_sauce)
+                        <div class="mb-3">
+                            <label class="form-label"><strong><x-bi en="Choose Sauce" ar="اختيار صوص" /></strong></label>
+                            @if($menu->category->sauces->isNotEmpty())
+                                @foreach($menu->category->sauces as $sauce)
+                                    <div class="form-check">
+                                        <input
+                                            class="form-check-input sauce-option"
+                                            type="radio"
+                                            name="sauce_id"
+                                            id="sauce-{{ $sauce->id }}"
+                                            value="{{ $sauce->id }}"
+                                            data-sauce-name="{{ $sauce->name }}"
+                                            data-sauce-name-ar="{{ $sauce->name_ar }}"
+                                        >
+                                        <label class="form-check-label" for="sauce-{{ $sauce->id }}">
+                                            {{ $sauce->name }} @if($sauce->name_ar) / <span dir="rtl" lang="ar">{{ $sauce->name_ar }}</span>@endif
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @else
+                                <p class="text-danger mb-0"><x-bi en="No sauce options are currently available for this category." ar="لا توجد خيارات صوص متاحة حالياً لهذه الفئة." /></p>
+                            @endif
                         </div>
+                        <hr />
+                    @endif
+                    @if($menu->category && $menu->category->requires_side)
+                        <div class="mb-3">
+                            <label class="form-label"><strong><x-bi en="Choose 2 Sides" ar="اختر 2 سايدز" /></strong></label>
+                            @if($menu->category->sides->isNotEmpty())
+                                @foreach($menu->category->sides as $side)
+                                    <div class="form-check">
+                                        <input
+                                            class="form-check-input side-option"
+                                            type="checkbox"
+                                            name="side_ids[]"
+                                            id="side-{{ $side->id }}"
+                                            value="{{ $side->id }}"
+                                            data-side-name="{{ $side->name }}"
+                                            data-side-name-ar="{{ $side->name_ar }}"
+                                        >
+                                        <label class="form-check-label" for="side-{{ $side->id }}">
+                                            {{ $side->name }} @if($side->name_ar) / <span dir="rtl" lang="ar">{{ $side->name_ar }}</span>@endif
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @else
+                                <p class="text-danger mb-0"><x-bi en="No side options are currently available for this category." ar="لا توجد خيارات سايد متاحة حالياً لهذه الفئة." /></p>
+                            @endif
+                        </div>
+                        <hr />
+                    @endif
+                    <div class="cart_extra">
+                        @if(!($menu->category && ($menu->category->requires_sauce || $menu->category->requires_side)))
+                            <div class="cart-product-quantity">
+                                <div class="quantity {{ $quantity==0? 'd-none':'' }}"  >
+                                    <input type="button" value="-" class="minus">
+                                    <input type="text" min="0" name="quantity" value="{{ $quantity }}" title="Qty" class="qty quantity-input" size="4" data-id="{{ $menu->id }}">
+                                    <input type="button" value="+" class="plus">
+                                </div>
+                            </div>
+                        @endif
                         <div class="cart_btn">
                             <button data-id="{{ $menu->id }}"
-                                data-name="{{ $menu->name }}"
+                                data-name="{{ $menu->name_ar ?: $menu->name }}"
                                 data-price="{{ $menu->price }}" 
-                                data-img_src="{{ asset('storage/' . $menu->image) }}"                                            
-                                type="button"  class="{{ $quantity==0 ? '':'d-none' }} btn btn-default rounded-0 add-to-cart"  >Add To Cart</button>
+                                data-img_src="{{ $menu->image_url }}"                                            
+                                data-requires-sauce="{{ ($menu->category && $menu->category->requires_sauce) ? 1 : 0 }}"
+                                data-requires-side="{{ ($menu->category && $menu->category->requires_side) ? 1 : 0 }}"
+                                type="button"  class="{{ ($menu->category && ($menu->category->requires_sauce || $menu->category->requires_side)) ? '' : ($quantity==0 ? '' : 'd-none') }} btn btn-default rounded-0 add-to-cart"  ><x-bi en="Add To Cart" ar="أضف للسلة"></x-bi></button>
 
 
-                                <button onclick="window.location.href='{{ route('customer.checkout.details') }}'" type="button" class="{{ $quantity == 0 ? 'd-none' : '' }} btn checkout-btn btn-secondary rounded-0">Proceed To CheckOut</button>
+                                <a href="{{ route('customer.cart') }}" class="{{ $quantity == 0 ? 'd-none' : '' }} btn checkout-btn btn-secondary rounded-0"><x-bi en="Proceed To Cart" ar="المتابعة إلى السلة"></x-bi></a>
 
                         </div>
                     </div>
@@ -207,42 +268,40 @@
             	<div class="medium_divider clearfix"></div>
             </div>
         </div>
-   
-        <div class="row">
-        	<div class="col-12">
-                <div class="medium_divider"></div>
-            </div>
-        </div>
-        <div class="row">
-        	<div class="col-12">
-            	<div class="heading_s1">
-                	<h3>Releted</h3>
-                </div>
-            	<div class="releted_product_slider carousel_slider owl-carousel owl-theme" data-margin="10" data-responsive='{"0":{"items": "1"}, "575":{"items": "2"}, "991":{"items": "3"}, "1199":{"items": "4"}}'>
 
-                        @forelse ($relatedMenus as $relatedMenu)
-                            <div class="item">
-                                <div class="single_product">
-                                    <a href="{{ route('menu.item', $relatedMenu->id) }}">
-                                        <div class="menu_product_img">
-                                            <img src="{{ asset('storage/' . $relatedMenu->image) }}" alt="{{ $relatedMenu->name }} img">
-                                        </div>
-                                    </a>
-                                    <div class="menu_product_info">
-                                        <div class="title">
-                                            <h5><a href="{{ route('menu.item', $relatedMenu->id) }}">{{ $relatedMenu->name }}</a></h5>
-                                        </div>
-                                        <p>{!! $site_settings->currency_symbol !!}{{ number_format($relatedMenu->price, 2) }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @empty
-                            <p>No related menus found.</p>
-                        @endforelse
-                     
+        @if(filled($menu->video_url) || filled($menu->video_embed_url))
+            <div class="row">
+                <div class="col-12">
+                    <div class="heading_s1">
+                        <h3>How It's Made</h3>
+                        <h3 dir="rtl" lang="ar">إزاي بيتعمل</h3>
+                    </div>
+                    @if(filled($menu->video_embed_url))
+                        <div class="embed-responsive embed-responsive-16by9 mb-3">
+                            <iframe
+                                class="embed-responsive-item"
+                                src="{{ $menu->video_embed_url }}"
+                                title="Menu Preparation Video"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen
+                                loading="lazy"
+                            ></iframe>
+                        </div>
+                    @endif
+                    @if(filled($menu->video_url))
+                        <a href="{{ $menu->video_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-default btn-sm rounded-0">
+                            <x-bi en="Open Video Link" ar="افتح رابط الفيديو"></x-bi>
+                        </a>
+                    @endif
                 </div>
             </div>
-        </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="medium_divider"></div>
+                </div>
+            </div>
+        @endif
     </div>
 </div>
 <!-- END SECTION SHOP -->

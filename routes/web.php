@@ -7,9 +7,14 @@ use App\Http\Middleware\CheckRoleCustomer;
 use App\Http\Controllers\PaymentController;
 use App\Http\Middleware\RedirectIfNotAdmin;
 use App\Http\Controllers\MainSiteController;
+use App\Http\Controllers\PublicMediaController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CartController;
+use App\Http\Controllers\Admin\LoyaltyController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\SauceController;
+use App\Http\Controllers\Admin\SideController;
+use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\TableBookingController;
@@ -27,6 +32,9 @@ use App\Http\Controllers\Admin\TableBookingController as AdminTableBookingContro
 
 
 Route::get('/', [MainSiteController::class, 'home'])->name('home');
+Route::get('media/{path}', [PublicMediaController::class, 'show'])
+    ->where('path', '.*')
+    ->name('media.public');
 
 Route::post('table-booking/', [TableBookingController::class, 'bookTable'])->name('table.booking');
 
@@ -40,6 +48,10 @@ Route::post('cart/remove', [MainSiteController::class, 'removeFromCart'])->name(
 Route::get('cart/view', [MainSiteController::class, 'getCart'])->name('customer.cart.view');
 Route::post('cart/clear', [MainSiteController::class, 'clearCart'])->name('customer.cart.clear');
 Route::post('cart/update', [MainSiteController::class, 'updateCartQuantity'])->name('customer.cart.update');
+
+//Dine-in checkout
+    Route::post('checkout/dinein', [CheckoutController::class, 'dineInCheckout'])->name('customer.checkout.dinein');
+    Route::post('checkout/online', [CheckoutController::class, 'onlineCheckout'])->name('customer.checkout.online');
 
 Route::get('getcart-totalitems/', [MainSiteController::class, 'getTotalItems'])->name('customer.getcart.totalitems');
 
@@ -111,6 +123,7 @@ Route::prefix('customer')->middleware(CheckRoleCustomer::class)->group(function 
 
 
 
+
     // Step 1: Customer details (review)
     Route::get('/checkout/details', [CheckoutController::class, 'details'])->name('customer.checkout.details');
     Route::post('/checkout/details', [CheckoutController::class, 'detailsPost'])->name('customer.checkout.details.post');
@@ -148,6 +161,8 @@ Route::prefix('customer')->middleware(CheckRoleCustomer::class)->group(function 
 //Admin Dashboard routes
 Route::prefix('admin')->middleware(RedirectIfNotAdmin::class)->group(function () {
      Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('dashboard/sales-data', [AdminController::class, 'salesChartData'])->name('admin.dashboard.sales-data');
+    Route::get('realtime/order-stats', [AdminController::class, 'realtimeOrderStats'])->name('admin.realtime.order-stats');
 
 
     Route::get('profile', [AdminController::class, 'viewMyProfile'])->name('admin.view.myprofile');
@@ -179,11 +194,28 @@ Route::prefix('admin')->middleware(RedirectIfNotAdmin::class)->group(function ()
 
  
     //Admin Order routes
+    Route::get('orders/download/table', [OrderController::class, 'download'])->name('admin.orders.download');
     Route::get('orders/{filter?}', [OrderController::class, 'index'])->name('admin.orders.index');
     Route::get('order/{id}', [OrderController::class, 'show'])->name('admin.order.show');
+    Route::get('order/{id}/transfer-proof', [OrderController::class, 'transferProof'])->name('admin.order.transfer-proof');
+    Route::get('order/{id}/receipt', [OrderController::class, 'receipt'])->name('admin.order.receipt');
     Route::post('order/create', [OrderController::class, 'createOrder'])->name('admin.order.store');
     Route::post('orders/update/{id}', [OrderController::class, 'update'])->name('admin.orders.update');
+    Route::post('orders/complete/{id}', [OrderController::class, 'markAsCompleted'])->name('admin.orders.complete');
     Route::delete('orders/destroy/{id}', [OrderController::class, 'destroy'])->name('admin.orders.destroy')->middleware(CheckRoleAdmin::class);
+
+    Route::get('stocks', [StockController::class, 'index'])->name('admin.stocks.index');
+    Route::get('stocks/data', [StockController::class, 'getStockData'])->name('admin.stocks.data');
+    Route::post('stocks', [StockController::class, 'store'])->name('admin.stocks.store');
+    Route::put('stocks/{stock}', [StockController::class, 'update'])->name('admin.stocks.update');
+    Route::delete('stocks/{stock}', [StockController::class, 'destroy'])->name('admin.stocks.destroy');
+    Route::post('stocks/recipes/{menu}', [StockController::class, 'syncRecipe'])->name('admin.stocks.recipes.sync');
+
+    // Admin/Cashier Loyalty routes
+    Route::get('loyalty', [LoyaltyController::class, 'index'])->name('admin.loyalty.index');
+    Route::post('loyalty/send', [LoyaltyController::class, 'send'])->name('admin.loyalty.send');
+    Route::post('loyalty/delete', [LoyaltyController::class, 'destroy'])->name('admin.loyalty.destroy');
+    Route::post('loyalty/delete-all', [LoyaltyController::class, 'destroyAll'])->name('admin.loyalty.destroy-all');
     
 
     //Admin Manage Booking
@@ -191,6 +223,10 @@ Route::prefix('admin')->middleware(RedirectIfNotAdmin::class)->group(function ()
     Route::post('table-bookings/store', [AdminTableBookingController::class, 'store'])->name('admin.table-bookings.store');
     Route::put('table-bookings/{id}', [AdminTableBookingController::class, 'update'])->name('admin.table-bookings.update');
     Route::delete('table-bookings/{id}', [AdminTableBookingController::class, 'destroy'])->name('admin.table-bookings.destroy');
+
+    // Menu visibility can be managed by cashier and global admin
+    Route::get('menu', [MenuController::class, 'index'])->name('admin.menus.index');
+    Route::post('menu/{id}/toggle-visibility', [MenuController::class, 'toggleVisibility'])->name('admin.menus.toggle-visibility');
    
 
     // Routes with CheckRoleAdmin is Global Admin middleware
@@ -203,10 +239,21 @@ Route::prefix('admin')->middleware(RedirectIfNotAdmin::class)->group(function ()
         Route::post('category/delete/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
 
         //Admin Settings Menu
-        Route::get('menu', [MenuController::class, 'index'])->name('admin.menus.index');
         Route::post('menu', [MenuController::class, 'store'])->name('admin.menus.store');
         Route::patch('menu/{id}', [MenuController::class, 'update'])->name('admin.menus.update');
         Route::delete('menu/{id}', [MenuController::class, 'destroy'])->name('admin.menus.destroy');
+
+        // Admin Settings Sauce
+        Route::get('sauces', [SauceController::class, 'index'])->name('admin.sauces.index');
+        Route::post('sauces', [SauceController::class, 'store'])->name('admin.sauces.store');
+        Route::post('sauces/{id}', [SauceController::class, 'update'])->name('admin.sauces.update');
+        Route::post('sauces/{id}/delete', [SauceController::class, 'destroy'])->name('admin.sauces.destroy');
+
+        // Admin Settings Sides
+        Route::get('sides', [SideController::class, 'index'])->name('admin.sides.index');
+        Route::post('sides', [SideController::class, 'store'])->name('admin.sides.store');
+        Route::post('sides/{id}', [SideController::class, 'update'])->name('admin.sides.update');
+        Route::post('sides/{id}/delete', [SideController::class, 'destroy'])->name('admin.sides.destroy');
     
         Route::get('general-settings', [GeneralSettingsController::class, 'index'])->name('admin.general-settings');
 

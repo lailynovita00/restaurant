@@ -8,9 +8,13 @@ trait OrderNumberGeneratorTrait
 {
     protected function generateOrderNumber()
     {
-        do {
-            $order_no = random_int(1000000, 9999999);
-        } while (Order::where('order_no', $order_no)->exists());
+        // Sequential order number (1, 2, 3, ...)
+        // Start from next id-like sequence and skip existing values if needed.
+        $order_no = ((int) Order::max('id')) + 1;
+
+        while (Order::where('order_no', $order_no)->exists()) {
+            $order_no++;
+        }
 
         return $order_no;
     }

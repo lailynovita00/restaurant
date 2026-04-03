@@ -109,8 +109,9 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        // Guard against invalid placeholders like "your_from_address" in .env.
+        'address' => filter_var(env('MAIL_FROM_ADDRESS'), FILTER_VALIDATE_EMAIL) ?: 'hello@example.com',
+        'name' => env('MAIL_FROM_NAME', 'Palombini'),
     ],
 
 ];

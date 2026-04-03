@@ -100,7 +100,7 @@
     <div class="container">
         <!-- Logo -->
         <div class="logo">
-            <img src="{{ config('site.url') . 'assets/images/logo_light.png' }}" alt="Logo">
+            <img src="{{ config('site.url') . 'assets/images/palombini-logo.png' }}" alt="Palombini Cafe Logo" style="height: 80px; width: auto;">
         </div>
 
         <!-- Greeting -->
@@ -120,17 +120,31 @@
             <tbody>
                 @foreach($orderItems as $item)
                     <tr>
-                        <td>{{ $item['menu_name'] }}</td>
-                        <td>{!! $site_settings->currency_symbol !!}{{ number_format($item['subtotal'], 2) }}</td>
+                        <td>
+                            {{ $item['menu_name'] }}
+                            @if(!empty($item['sauce_name']))
+                                <div style="font-size: 12px; color: #6c757d;">
+                                    Sauce: {{ $item['sauce_name'] }}
+                                    @if(!empty($item['sauce_name_ar'])) / {{ $item['sauce_name_ar'] }} @endif
+                                </div>
+                            @endif
+                            @if(!empty($item['side_names']) && is_array($item['side_names']))
+                                <div style="font-size: 12px; color: #6c757d;">
+                                    Sides: {{ implode(', ', array_filter($item['side_names'])) }}
+                                    @if(!empty($item['side_names_ar']) && is_array($item['side_names_ar'])) / {{ implode('، ', array_filter($item['side_names_ar'])) }} @endif
+                                </div>
+                            @endif
+                        </td>
+                        <td>{{ number_format($item['subtotal'], 2) }} {!! $site_settings->currency_symbol !!}</td>
                         <td>{{ $item['quantity'] }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <p><strong>Subtotal:</strong> {!! $site_settings->currency_symbol !!}{{ number_format($totalPrice, 2) }}</p>
-        <p><strong>Delivery Fee:</strong> {!! $site_settings->currency_symbol !!}{{ number_format($deliveryFee, 2) }}</p>
-        <p><strong>Total Price Paid:</strong> {!! $site_settings->currency_symbol !!}{{ number_format($totalPrice + $deliveryFee, 2) }}</p>
+        <p><strong>Subtotal:</strong> {{ number_format($totalPrice, 2) }} {!! $site_settings->currency_symbol !!}</p>
+        <p><strong>Delivery Fee:</strong> {{ number_format($deliveryFee, 2) }} {!! $site_settings->currency_symbol !!}</p>
+        <p><strong>Total Price Paid:</strong> {{ number_format($totalPrice + $deliveryFee, 2) }} {!! $site_settings->currency_symbol !!}</p>
 
         <p>If you have any questions or need assistance, feel free to contact us:</p>
         <p><strong>Contact Information:</strong></p>

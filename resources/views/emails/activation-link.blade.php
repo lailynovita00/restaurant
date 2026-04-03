@@ -81,7 +81,7 @@
     <div class="container">
          <!-- Logo -->
          <div class="logo">
-            <img src="{{ config('site.url') . 'assets/images/logo_light.png' }}" alt="Logo">
+            <img src="{{ config('site.url') . 'assets/images/palombini-logo.png' }}" alt="Palombini Cafe Logo" style="height: 80px; width: auto;">
         </div>       
 
         <h1>Activate Your Account</h1>

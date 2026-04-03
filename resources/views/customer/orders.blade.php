@@ -31,7 +31,7 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
 
     <style>
         .acct {
@@ -302,7 +302,7 @@
                                             </td>
                                             <td data-label="Amount">
                                                 <span class="fw-semibold">
-                                                    {!! $site_settings->currency_symbol ?? '£' !!}{{ number_format($order->total_price, 2) }}
+                                                    {{ number_format($order->total_price, 2) }} {!! $site_settings->currency_symbol ?? '£' !!}
                                                 </span>
                                             </td>
                                             <td data-label="Status">

@@ -6,6 +6,20 @@
     <link rel="stylesheet" href="/admin_resources/vendors/typicons.font/font/typicons.css">
     <link rel="stylesheet" href="/admin_resources/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="/admin_resources/css/vertical-layout-light/style.css">
+        <style>
+            .profile-bi.bi-text {
+                display: inline-flex;
+                flex-direction: column;
+                line-height: 1.1;
+            }
+
+            .profile-bi.bi-text .bi-ar,
+            .profile-bi.bi-text .bi-ar-inline {
+                font-size: 0.78em;
+                margin-top: 2px;
+                opacity: 0.9;
+            }
+        </style>
     
 @endpush
 
@@ -45,7 +59,7 @@
 
       <div class="card card-info">
         <div class="card-header">
-            <i class="fa fa-user"></i> My Profile
+            <i class="fa fa-user"></i> <x-bi class="profile-bi" en="My Profile" ar="ملفي الشخصي" />
         </div>
         <div class="card-body">
             <div class="d-flex justify-content-center align-items-center">
@@ -55,37 +69,38 @@
                          alt="Profile Preview" 
                          class="img-thumbnail" 
                          style="width: 150px; height: 150px;">
+                    <div class="mt-2"><x-bi class="profile-bi" en="Profile Preview" ar="معاينة الملف الشخصي" /></div>
                 </div>
             </div>
             <hr/>
             <table class="table table-bordered">
                 <tbody>
                     <tr>
-                        <td><b>First Name:</b></td>
+                        <td><b><x-bi class="profile-bi" en="First Name:" ar="الاسم الأول:" /></b></td>
                         <td>{{ $user->first_name }}</td>
                     </tr>
                     <tr>
-                        <td><b>Middle Name:</b></td>
+                        <td><b><x-bi class="profile-bi" en="Middle Name:" ar="الاسم الأوسط:" /></b></td>
                         <td>{{ $user->middle_name ?? '' }}</td>
                     </tr>
                     <tr>
-                        <td><b>Last Name:</b></td>
+                        <td><b><x-bi class="profile-bi" en="Last Name:" ar="اسم العائلة:" /></b></td>
                         <td>{{ $user->last_name }}</td>
                     </tr>
                     <tr>
-                        <td><b>Email:</b></td>
+                        <td><b><x-bi class="profile-bi" en="Email:" ar="البريد الإلكتروني:" /></b></td>
                         <td>{{ $user->email }}</td>
                     </tr>
                     <tr>
-                        <td><b>Role:</b></td>
+                        <td><b><x-bi class="profile-bi" en="Role:" ar="الدور:" /></b></td>
                         <td>{{ ucwords(str_replace('_', ' ', $user->role)) }}</td>
                     </tr>
                     <tr>
-                        <td><b>Phone Number:</b></td>
+                        <td><b><x-bi class="profile-bi" en="Phone Number:" ar="رقم الهاتف:" /></b></td>
                         <td>{{ $user->phone_number ?? 'N/A' }}</td>
                     </tr>
                     <tr>
-                        <td><b>Address:</b></td>
+                        <td><b><x-bi class="profile-bi" en="Address:" ar="العنوان:" /></b></td>
                         <td>{{ $user->address ?? 'N/A' }}</td>
                     </tr>
                 </tbody>
@@ -93,8 +108,8 @@
             
         </div>
         <div class="card-footer">
-            <button type="button" onclick="window.location='{{ route('admin.myprofile.edit') }}'" class="btn btn-info">Edit My Profile</button>
-            <button type="button" onclick="window.location='{{ route('admin.dashboard') }}'" class="btn btn-primary float-right">Dashboard</button>
+            <button type="button" onclick="window.location='{{ route('admin.myprofile.edit') }}'" class="btn btn-info"><x-bi en="Edit My Profile" ar="تعديل الملف الشخصي" /></button>
+            <button type="button" onclick="window.location='{{ route('admin.dashboard') }}'" class="btn btn-primary float-right"><x-bi en="Dashboard" ar="لوحة التحكم" /></button>
         </div>
     </div>
 

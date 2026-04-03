@@ -22,12 +22,12 @@ a:hover,
 .profile_info a:hover,
 .tab-style4 .nav-tabs .nav-item a.active,
 .toggle_info i {
-	color: #FF324D;
+	color: #92824e;
 }
 
 .btn-default:hover,
 .text_default {
-	color: #FF324D !important;
+	color: #92824e !important;
 }
 
 .btn-default::before,
@@ -47,7 +47,7 @@ a:hover,
 .tags a:hover,
 .blockquote_style1,
 .custome-radio input[type="radio"] + .form-check-label::after {
-	background-color: #FF324D;
+	background-color: #92824e;
 }
 
 .btn-default,
@@ -58,9 +58,9 @@ a:hover,
 .tab-style4 .nav-tabs .nav-item a.active,
 .toggle_info,
 .custome-radio input[type="radio"]:checked + .form-check-label::before {
-	border-color: #FF324D;
+	border-color: #92824e;
 }
 
 .blockquote_style1 {
-	border-color: #DF122D;
+	border-color: #a38a6a;
 }

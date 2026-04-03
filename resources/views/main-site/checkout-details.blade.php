@@ -34,7 +34,7 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
 @endpush
 
 @push('scripts')
@@ -89,7 +89,7 @@
 @endpush
 
 
-@section('title', 'Create Account')
+@section('title', 'Checkout Details')
 
 
 @section('header')
@@ -114,14 +114,14 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-6 mx-auto">
                     <div class="order_review">
-                        <h4 class="mb-4">Confirm Your Details</h4>
+                        <h4 class="mb-4"><x-bi en="Confirm Your Details" ar="أكد بياناتك" /></h4>
                         <hr>
                         @include('partials.message-bag')
 
                         <div class="row">
                             <!-- Full Name (read-only) -->
                             <div class="form-group col-md-12">
-                                <label for="name">Full Name</label>
+                                <label for="name"><x-bi en="Full Name" ar="الاسم الكامل" /></label>
                                 <input
                                     id="name"
                                     class="form-control"
@@ -134,7 +134,7 @@
 
                             <!-- Email (read-only) -->
                             <div class="form-group col-md-12">
-                                <label for="email">Email Address</label>
+                                <label for="email"><x-bi en="Email Address" ar="البريد الإلكتروني" /></label>
                                 <input
                                     id="email"
                                     class="form-control"
@@ -147,7 +147,7 @@
 
                             <!-- Phone (read-only) -->
                             <div class="form-group col-md-12">
-                                <label for="phone_number">Phone Number</label>
+                                <label for="phone_number"><x-bi en="Phone Number" ar="رقم الهاتف" /></label>
                                 <input
                                     id="phone_number"
                                     class="form-control"
@@ -161,8 +161,8 @@
                             <!-- Note to update -->
                             <div class="form-group col-md-12">
                                 <small class="text-muted">
-                                    If these details are incorrect, please
-                                    <a href="{{ route('customer.edit.profile') }}">click here to update your details</a>.
+                                    <x-bi en="If these details are incorrect, please" ar="لو البيانات دي مش صحيحة، من فضلك" />
+                                    <a href="{{ route('customer.edit.profile') }}"><x-bi en="click here to update your details" ar="اضغط هنا لتحديث بياناتك" /></a>.
                                 </small>
                             </div>
 
@@ -171,14 +171,14 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="confirm_details" name="confirm" value="1" required>
                                     <label class="form-check-label" for="confirm_details">
-                                        I confirm these details are correct
+                                        <x-bi en="I confirm these details are correct" ar="أؤكد إن البيانات دي صحيحة" />
                                     </label>
                                 </div>
                             </div>
 
                             <!-- Buttons -->
                             <div class="form-group col-md-12">
-                                <button type="submit" class="btn btn-default btn-block">Continue</button>
+                                <button type="submit" class="btn btn-default btn-block"><x-bi en="Continue" ar="متابعة" /></button>
                             </div>
                         
                         </div>

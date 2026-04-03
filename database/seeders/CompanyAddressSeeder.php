@@ -9,36 +9,17 @@ class CompanyAddressSeeder extends Seeder
 {
     public function run(): void
     {
-        $addresses = [
-            [
-                'street'       => '38 Schuster Rd',
-                'city'         => 'Manchester',
-                'state'        => 'England',
-                'postal_code'  => 'M14 5LX',
-                'country'      => 'United Kingdom',
-                'latitude'     => 53.448990,   // You can update these later
-                'longitude'    => -2.229520,
-            ],
-            [
-                'street'       => '63 Bradshawgate',
-                'city'         => 'Bolton',
-                'state'        => 'England',
-                'postal_code'  => 'BL1 1QD',
-                'country'      => 'United Kingdom',
-                'latitude'     => 53.577049,  // You can update these later
-                'longitude'    => -2.429560,
-            ]
-        ];
+        CompanyAddress::query()->delete();
 
-        foreach ($addresses as $address) {
-            CompanyAddress::updateOrCreate(
-                [
-                    'street'      => $address['street'],
-                    'postal_code' => $address['postal_code'],
-                ],
-                $address
-            );
-        }
+        CompanyAddress::create([
+            'street'       => '9 Abd El-Khalik Tharwat, San Stefano, El Raml 1',
+            'city'         => 'Alexandria',
+            'state'        => 'Alexandria Governorate',
+            'postal_code'  => '5452055',
+            'country'      => 'Egypt',
+            'latitude'     => null,
+            'longitude'    => null,
+        ]);
     }
 }
 

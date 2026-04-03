@@ -16,10 +16,9 @@ class CreateUserRequest extends FormRequest
         return [
             'first_name' => 'required|string|max:255',   
             'middle_name' => 'nullable|string|max:255', 
-            'last_name' => 'required|string|max:255',    
+            'last_name' => 'nullable|string|max:255',    
             'email' => 'required|email|unique:users,email',  
-            'role' => 'required|in:admin,global_admin,customer',  
-            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:admin,cashier,global_admin,customer',  
         ];
     }
 
@@ -33,7 +32,6 @@ class CreateUserRequest extends FormRequest
             'middle_name.string' => 'The middle name must be a string.',
             'middle_name.max' => 'The middle name must not exceed 255 characters.',
             
-            'last_name.required' => 'The last name field is required.',
             'last_name.string' => 'The last name must be a string.',
             'last_name.max' => 'The last name must not exceed 255 characters.',
             
@@ -42,22 +40,33 @@ class CreateUserRequest extends FormRequest
             'email.unique' => 'This email has already been taken.',
             
             'role.required' => 'The role field is required.',
-            'role.in' => 'The role must be either admin, global_admin, or customer.',
-            'password.required' => 'The password field is required.',
-            'password.string' => 'Please enter a valid password using letters, numbers, or symbols.',
-            'password.min' => 'The password must be at least 8 characters.',
-            'password.confirmed' => 'The password confirmation does not match.',
+            'role.in' => 'The role must be either admin, cashier, global_admin, or customer.',
         ];
     }
 
     protected function prepareForValidation()
     {
         $this->merge([
-            'first_name' => ucwords($this->first_name),
-            'middle_name' => ucwords($this->middle_name),
-            'last_name' => ucwords($this->last_name),
-            'email' => strtolower($this->email),
+            'first_name' => $this->normalizeName($this->input('first_name')),
+            'middle_name' => $this->normalizeName($this->input('middle_name')),
+            'last_name' => $this->normalizeName($this->input('last_name')),
+            'email' => strtolower(trim((string) $this->input('email'))),
             
         ]);
+    }
+
+    private function normalizeName($value): ?string
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        $normalized = trim((string) $value);
+
+        if ($normalized === '') {
+            return null;
+        }
+
+        return ucwords(strtolower($normalized));
     }
 }

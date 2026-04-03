@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/admin_resources/vendors/typicons.font/font/typicons.css">
   <link rel="stylesheet" href="/admin_resources/vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="/admin_resources/css/vertical-layout-light/style.css">
-  <link rel="shortcut icon" href="/favicon_io/favicon.ico" />
+  <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png?v=2" />
 </head>
 
 <body>

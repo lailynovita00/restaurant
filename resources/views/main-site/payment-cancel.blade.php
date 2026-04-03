@@ -31,7 +31,7 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
 @endpush
 
 @push('scripts')
@@ -110,9 +110,7 @@
             <img src="/assets/images/cancelled.png" alt="Payment Cancelled" style="width:20%" class="img-fluid rounded my-3">
             <p>We noticed that your payment was not successful. If this was a mistake, you can try placing your order again.</p>
             <p>If you have any questions or need assistance, please contact us at 
-                @if($firstRestaurantPhoneNumber)
-                    <a href="tel:{{ $firstRestaurantPhoneNumber->phone_number }}">{{ $firstRestaurantPhoneNumber->phone_number }}</a>
-                @endif
+                <a href="tel:{{ config('site.phone') }}">{{ config('site.phone') }}</a>
                 or email us at 
                 <a href="mailto:{{ config('site.email') }}">{{ config('site.email') }}</a>.
             </p>

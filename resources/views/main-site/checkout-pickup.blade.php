@@ -34,7 +34,7 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
 
 <style>
   /* Ensure page can scroll even if something left it locked */
@@ -165,7 +165,7 @@
 @endpush
 
 
-@section('title', 'Create Account')
+@section('title', 'Pickup Location')
 
 
 @section('header')
@@ -185,13 +185,13 @@
     <div class="row justify-content-center">
       <div class="col-12 col-lg-6 mx-auto">
         <div class="order_review">
-          <h4 class="mb-4">Select Pickup Location</h4>
+          <h4 class="mb-4"><x-bi en="Select Pickup Location" ar="اختر مكان الاستلام" /></h4>
           <hr>
 
           @include('partials.message-bag')
 
           @if($pickupLocations->isEmpty())
-            <p class="text-muted">No pickup locations are currently available.</p>
+            <p class="text-muted"><x-bi en="No pickup locations are currently available." ar="لا توجد نقاط استلام متاحة حالياً." /></p>
           @else
             <form id="pickupForm" method="POST" action="{{ route('customer.checkout.pickup.post') }}">
               @csrf
@@ -205,17 +205,17 @@
                        data-id="{{ $location->id }}"
                        tabindex="0" role="button" aria-pressed="false">
                     <div class="checkmark"></div>
-                    <h6 class="option-title">Pickup Point</h6>
+                    <h6 class="option-title"><x-bi en="Pickup Point" ar="نقطة الاستلام" /></h6>
                     <p class="option-sub mb-0">{{ $location->full_address }}</p>
                   </div>
                 @endforeach
               </div>
 
               <div class="form-group mt-4">
-                <button type="submit" class="btn btn-default btn-block">Continue to Payment</button>
+                <button type="submit" class="btn btn-default btn-block"><x-bi en="Continue to Payment" ar="متابعة للدفع" /></button>
               </div>
               <div class="form-group">
-                <a href="{{ route('customer.checkout.fulfilment') }}" class="btn btn-default btn-block">Back</a>
+                <a href="{{ route('customer.checkout.fulfilment') }}" class="btn btn-default btn-block"><x-bi en="Back" ar="رجوع" /></a>
               </div>
             </form>
           @endif

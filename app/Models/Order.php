@@ -26,6 +26,13 @@ class Order extends Model
         'price_per_mile',
         'delivery_address_id',
         'pickup_address_id',
+        'table_number',
+        'customer_phone',
+        'online_customer_name',
+        'online_customer_phone',
+        'online_delivery_address',
+        'transfer_proof_path',
+        'cancellation_reason',
     ];
 
     // Customer who placed the order

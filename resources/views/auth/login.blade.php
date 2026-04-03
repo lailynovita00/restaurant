@@ -34,7 +34,7 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
 @endpush
 
 @push('scripts')
@@ -146,11 +146,10 @@
                                     <button type="submit" class="btn btn-default btn-block">Login</button>
                                 </div>
 
-                                <!-- Login Link -->
-                                <div class="form-group mb-0 mt-2 col-md-12">
+                                {{-- <div class="form-group mb-0 mt-2 col-md-12">
                                     <p class="text-center">Don't have an account? <a href="{{ route('customer.account.create') }}">Create an Account</a></p>
                                     <p class="text-center">Forgot password? <a href="{{ route('auth.password.request') }}">Reset here</a></p>
-                                </div>
+                                </div> --}}
 
                             </div>
                         </div>

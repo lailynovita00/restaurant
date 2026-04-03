@@ -28,7 +28,7 @@ class UpdateUserRequest extends FormRequest
             'middle_name' => 'nullable|string|max:255',  
             'last_name' => 'required|string|max:255',  
             'email' => 'required|email|unique:users,email,' . $userId,
-            'role' => 'required|in:admin,global_admin',
+            'role' => 'required|in:admin,cashier,global_admin',
         ];
     }
 
@@ -51,7 +51,7 @@ class UpdateUserRequest extends FormRequest
             'email.unique' => 'This email has already been taken.',
             
             'role.required' => 'The role field is required.',
-            'role.in' => 'The role must be either admin or global_admin.',
+            'role.in' => 'The role must be either admin, cashier, or global_admin.',
         ];
     }
 

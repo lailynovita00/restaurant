@@ -13,10 +13,26 @@
 <!-- SITE TITLE -->
 <title>{{ config('site.name') }} - @yield('title')</title>
 <!-- Favicon Icon -->
-<link rel="shortcut icon" type="image/x-icon" href="/favicon_io/favicon.ico" />
+<link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png?v=2" />
+<link rel="icon" type="image/png" href="/assets/images/favicon.png?v=2" />
 
 @stack('styles')
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ <style>
+    .bi-text {
+        display: inline-flex;
+        flex-direction: column;
+        gap: 2px;
+        line-height: 1.15;
+    }
+    .bi-text .bi-ar,
+    .bi-text .bi-ar-inline {
+        font-size: 0.92em;
+    }
+    .bi-text .bi-sep {
+        display: none;
+    }
+ </style>
  
 </head>
 

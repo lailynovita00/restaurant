@@ -34,7 +34,7 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
 @endpush
 
 @push('scripts')
@@ -79,7 +79,7 @@
 @endpush
 
 
-@section('title', 'Checkout')
+@section('title', 'Checkout Review')
 
 
 @section('header')
@@ -109,7 +109,7 @@
                     <div class="col-12 col-lg-6 mx-auto">
                     <div class="order_review">
                         <div class="heading_s1">
-                            <h4>Your Orders</h4>
+                            <h4><x-bi en="Your Orders" ar="طلباتك" /></h4>
                         </div>
                         @include('partials.message-bag')
 
@@ -117,30 +117,38 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Product</th>
-                                        <th>Total</th>
+                                        <th><x-bi en="Product" ar="المنتج" /></th>
+                                        <th><x-bi en="Total" ar="الإجمالي" /></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($cart_items as $item)
                                         <tr>
-                                            <td>{{ $item['name'] }} <span class="product-qty">x {{ $item['quantity'] }}</span></td>
-                                            <td>{!! $site_settings->currency_symbol !!}{{ number_format($item['price'] * $item['quantity'], 2) }}</td>
+                                            <td>
+                                                {{ $item['name'] }} <span class="product-qty">x {{ $item['quantity'] }}</span>
+                                                @if(!empty($item['sauce_name']))
+                                                    <div style="font-size: 0.85em; color: #6c757d;">
+                                                        <x-bi en="Sauce" ar="الصوص" />: {{ $item['sauce_name'] }}
+                                                        @if(!empty($item['sauce_name_ar'])) / <span dir="rtl" lang="ar">{{ $item['sauce_name_ar'] }}</span>@endif
+                                                    </div>
+                                                @endif
+                                            </td>
+                                            <td>{{ number_format($item['price'] * $item['quantity'], 2) }} {!! $site_settings->currency_symbol !!}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Cart Subtotal</th>
-                                        <td class="product-subtotal">{!! $site_settings->currency_symbol !!}{{ number_format($subtotal, 2) }}</td>
+                                        <th><x-bi en="Cart Subtotal" ar="إجمالي السلة" /></th>
+                                        <td class="product-subtotal">{{ number_format($subtotal, 2) }} {!! $site_settings->currency_symbol !!}</td>
                                     </tr>
                                     <tr>
-                                        <th>Delivery Fee</th>
-                                        <td class="product-subtotal">{!! $site_settings->currency_symbol !!}{{ number_format($delivery_fee, 2) }}</td>
+                                        <th><x-bi en="Delivery Fee" ar="رسوم التوصيل" /></th>
+                                        <td class="product-subtotal">{{ number_format($delivery_fee, 2) }} {!! $site_settings->currency_symbol !!}</td>
                                     </tr>
                                     <tr>
-                                        <th>Order Total</th>
-                                        <td class="product-subtotal"><strong>{!! $site_settings->currency_symbol !!}{{ number_format($subtotal + $delivery_fee, 2) }}</strong></td>
+                                        <th><x-bi en="Order Total" ar="إجمالي الطلب" /></th>
+                                        <td class="product-subtotal"><strong>{{ number_format($subtotal + $delivery_fee, 2) }} {!! $site_settings->currency_symbol !!}</strong></td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -151,17 +159,17 @@
                         <!-- Additional Information -->
                         <div class="form-group mb-0 mt-2 col-md-12">
                             <div class="heading_s1">
-                                <h4>Additional Information</h4>
+                                <h4><x-bi en="Additional Information" ar="معلومات إضافية" /></h4>
                             </div>
-                            <textarea rows="4" class="form-control" name="additional_info" placeholder="e.g., allergies or any other information you want to provide">{{ old('additional_info') }}</textarea>
+                            <textarea rows="4" class="form-control" name="additional_info" placeholder="e.g., allergies or any other information you want to provide / مثال: حساسية أو أي ملاحظة إضافية">{{ old('additional_info') }}</textarea>
                         </div> 
                     </div>
                         <div class="row">
                             <div class="col-6 text-start">
-                                <button onclick="window.history.back()" type="button" class="btn btn-secondary btn-block">Back</button>
+                                <button onclick="window.history.back()" type="button" class="btn btn-secondary btn-block"><x-bi en="Back" ar="رجوع" /></button>
                             </div>
                             <div class="col-6 text-end">
-                                <button type="submit" class="btn btn-default btn-block">Place Order</button>
+                                <button type="submit" class="btn btn-default btn-block"><x-bi en="Place Order" ar="تأكيد الطلب" /></button>
                             </div>
                         </div>
 

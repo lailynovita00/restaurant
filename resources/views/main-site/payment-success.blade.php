@@ -32,7 +32,7 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
 @endpush
 
 @push('scripts')
@@ -124,9 +124,7 @@
                 <p>Your order number is <strong>#{{ $order->order_no }}</strong>.</p>
                 <p>An email confirmation has been sent to {{ $order->customer->email }}.</p>
                 <p>If you have any questions , please contact us at 
-                    @if($firstRestaurantPhoneNumber)
-                        <a href="tel:{{ $firstRestaurantPhoneNumber->phone_number }}">{{ $firstRestaurantPhoneNumber->phone_number }}</a>
-                    @endif
+                    <a href="tel:{{ config('site.phone') }}">{{ config('site.phone') }}</a>
                     or email us at 
                     <a href="mailto:{{ config('site.email') }}">{{ config('site.email') }}</a>.
                 </p>

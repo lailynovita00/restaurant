@@ -31,7 +31,7 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
 
     <style>
       /* Ensure page can scroll even if something left it locked */
@@ -221,7 +221,7 @@
         if (!addressToDeleteId) return;
 
         const button = addressDeleteButton;
-        $(this).prop('disabled', true).text('Deleting...');
+        $(this).prop('disabled', true).text('Deleting... / جاري الحذف...');
 
         $.ajax({
             url: `/customer/address/${addressToDeleteId}`,
@@ -234,13 +234,13 @@
                 if (response.success) {
                     button.closest('label').fadeOut(300, function() { $(this).remove(); });
                 } else {
-                    alert(response.message || 'Failed to delete address.');
+                    alert(response.message || 'Failed to delete address. / فشل حذف العنوان.');
                 }
             },
             error: function () {
                 $('#confirmDeleteModal').modal('hide');
                 $('#confirmDeleteBtn').prop('disabled', false).html('<i class="fas fa-trash-alt me-1"></i> Delete');
-                alert('Error deleting address. Please try again.');
+                alert('Error deleting address. Please try again. / حدث خطأ أثناء حذف العنوان. حاول مرة أخرى.');
             }
         });
     });
@@ -248,7 +248,7 @@
 
 @endpush
 
-@section('title', 'Create Account')
+@section('title', 'Delivery Address')
 
 @section('header')
   <!-- START HEADER -->
@@ -269,7 +269,7 @@
       <div class="row justify-content-center">
         <div class="col-12 col-lg-6 mx-auto">
           <div class="order_review">
-            <h4 class="mb-4">Delivery Address</h4>
+            <h4 class="mb-4"><x-bi en="Delivery Address" ar="عنوان التوصيل" /></h4>
             <hr>
             @include('partials.message-bag')
 
@@ -280,13 +280,13 @@
             <div id="deliveryModeGroup" class="choice-grid mt-2">
               <div class="option-card" data-value="saved" tabindex="0" role="button" aria-pressed="false">
                 <div class="checkmark"></div>
-                <h6 class="option-title">Use a Saved Address</h6>
-                <p class="option-sub">Pick from your address book.</p>
+                <h6 class="option-title"><x-bi en="Use a Saved Address" ar="استخدم عنوان محفوظ" /></h6>
+                <p class="option-sub"><x-bi en="Pick from your address book." ar="اختَر من عناوينك المحفوظة." /></p>
               </div>
               <div class="option-card" data-value="new" tabindex="0" role="button" aria-pressed="false">
                 <div class="checkmark"></div>
-                <h6 class="option-title">Add a New Address</h6>
-                <p class="option-sub">Search and add a new address.</p>
+                <h6 class="option-title"><x-bi en="Add a New Address" ar="أضف عنوان جديد" /></h6>
+                <p class="option-sub"><x-bi en="Search and add a new address." ar="ابحث وأضف عنوان جديد." /></p>
               </div>
             </div>
 
@@ -322,51 +322,51 @@
                   @endforeach
                 </div>
               @else
-                <div class="alert alert-info">You have no saved addresses yet.</div>
+                <div class="alert alert-info"><x-bi en="You have no saved addresses yet." ar="لسه ما عندكش عناوين محفوظة." /></div>
               @endif
             </div>
 
             {{-- ===== New delivery address (inline) ===== --}}
             <div id="delivery_new_block" class="mt-3 {{ $hasSaved ? 'd-none' : '' }}">
               <div id="delivery_new_inline" class="fieldset">
-                <label class="form-label">Search address</label>
+                <label class="form-label"><x-bi en="Search address" ar="ابحث عن عنوان" /></label>
                 <input type="text"
                        id="del_autocomplete"
                        class="form-control mb-3"
-                       placeholder="Start typing address..."
+                       placeholder="Start typing address... / ابدأ كتابة العنوان..."
                        data-places-search
                        autocomplete="off" spellcheck="false">
 
                 <div class="row g-3">
                   <div class="col-md-6">
-                    <label class="form-label">Street</label>
+                    <label class="form-label"><x-bi en="Street" ar="الشارع" /></label>
                     <input id="del_line1" name="new[line1]" class="form-control"
                            value="{{ old('new.line1') }}" readonly>
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label">Apt / Suite</label>
+                    <label class="form-label"><x-bi en="Apt / Suite" ar="شقة / وحدة" /></label>
                     <input id="del_line2" name="new[line2]" class="form-control"
                            value="{{ old('new.line2') }}" readonly>
                   </div>
 
                   <div class="col-md-6">
-                    <label class="form-label">City</label>
+                    <label class="form-label"><x-bi en="City" ar="المدينة" /></label>
                     <input id="del_city" name="new[city]" class="form-control"
                            value="{{ old('new.city') }}" readonly>
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label">State / Province</label>
+                    <label class="form-label"><x-bi en="State / Province" ar="المحافظة / الولاية" /></label>
                     <input id="del_state" name="new[state]" class="form-control"
                            value="{{ old('new.state') }}" readonly>
                   </div>
 
                   <div class="col-md-6">
-                    <label class="form-label">Postal Code</label>
+                    <label class="form-label"><x-bi en="Postal Code" ar="الرمز البريدي" /></label>
                     <input id="del_postal" name="new[postal_code]" class="form-control"
                            value="{{ old('new.postal_code') }}" readonly>
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label">Country</label>
+                    <label class="form-label"><x-bi en="Country" ar="الدولة" /></label>
                     <input id="del_country" name="new[country]" class="form-control"
                            value="{{ old('new.country') }}" readonly>
                   </div>
@@ -379,10 +379,10 @@
 
             {{-- Buttons --}}
             <div class="form-group col-md-12 mt-4 p-0">
-              <button type="submit" class="btn btn-default btn-block">Continue</button>
+              <button type="submit" class="btn btn-default btn-block"><x-bi en="Continue" ar="متابعة" /></button>
             </div>
             <div class="form-group col-md-12 p-0">
-              <a href="{{ route('customer.checkout.fulfilment') }}" class="btn btn-default btn-block">Back</a>
+              <a href="{{ route('customer.checkout.fulfilment') }}" class="btn btn-default btn-block"><x-bi en="Back" ar="رجوع" /></a>
             </div>
 
           </div>
@@ -398,17 +398,17 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header border-0">
-        <h5 class="modal-title fw-bold">Confirm Deletion</h5>
+        <h5 class="modal-title fw-bold"><x-bi en="Confirm Deletion" ar="تأكيد الحذف" /></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p class="mb-1">Are you sure you want to delete this address?</p>
+        <p class="mb-1"><x-bi en="Are you sure you want to delete this address?" ar="هل أنت متأكد إنك عايز تحذف العنوان ده؟" /></p>
         <small class="text-muted" id="addressToDelete"></small>
       </div>
       <div class="modal-footer border-0">
-        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal"><x-bi en="Cancel" ar="إلغاء" /></button>
         <button type="button" id="confirmDeleteBtn" class="btn btn-danger">
-          <i class="fas fa-trash-alt me-1"></i> Delete
+          <i class="fas fa-trash-alt me-1"></i> <x-bi en="Delete" ar="حذف" />
         </button>
       </div>
     </div>

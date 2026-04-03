@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -11,6 +12,12 @@ return new class extends Migration
         Schema::table('orders', function (Blueprint $table) {
             // Replace customer_id with user_id
             if (Schema::hasColumn('orders', 'customer_id')) {
+                // Drop old FK before renaming to avoid carrying customer FK onto user_id.
+                try {
+                    DB::statement('ALTER TABLE `orders` DROP FOREIGN KEY `orders_customer_id_foreign`');
+                } catch (\Throwable $e) {
+                    // FK may not exist in some environments.
+                }
                 $table->renameColumn('customer_id', 'user_id');
             } else {
                 $table->unsignedBigInteger('user_id')->nullable()->after('order_no');

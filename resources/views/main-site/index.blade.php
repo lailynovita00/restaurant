@@ -35,7 +35,61 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
+
+    <style>
+        .banner_section .banner_content2 h2 {
+            font-size: 44px;
+            line-height: 1.15;
+            margin-bottom: 10px;
+        }
+
+        .banner_section .banner_content2 h4 {
+            font-size: 24px;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .banner_section .banner_content2 p {
+            font-size: 16px;
+            line-height: 1.45;
+            margin-bottom: 10px;
+        }
+
+        .banner_section .banner_content2 [lang="ar"] {
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 991px) {
+            .banner_section .banner_content2 h2 {
+                font-size: 34px;
+            }
+
+            .banner_section .banner_content2 h4 {
+                font-size: 20px;
+            }
+
+            .banner_section .banner_content2 p {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .banner_section .banner_content2 h2 {
+                font-size: 28px;
+                line-height: 1.2;
+            }
+
+            .banner_section .banner_content2 h4 {
+                font-size: 18px;
+            }
+
+            .banner_section .banner_content2 p {
+                font-size: 14px;
+                line-height: 1.35;
+            }
+        }
+    </style>
 
     
     <!-- FancyBox CSS -->
@@ -157,9 +211,11 @@
                         <div class="row">
                             <div class="col-lg-7 col-md-12 col-sm-12">
                                 <div class="banner_content2 text_white">
-                                    <h2 class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.2s">Tasty African Delights</h2>
-                                    <p class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.4s">Experience the vibrant flavors of Africa with dishes crafted to perfection. <br class="d-none d-md-block" /> Each bite takes you closer to tradition and joy.</p>
-                                    <a class="btn btn-default rounded-0 staggered-animation" href="{{ route('menu') }}" data-animation="fadeInUp" data-animation-delay="0.6s">Order Online</a>
+                                    <h2 class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.2s">Authentic Italian Dishes, Made with Heart</h2>
+                                    <h2 class="staggered-animation" dir="rtl" lang="ar" data-animation="fadeInUp" data-animation-delay="0.3s">أطباق إيطالية أصلية متحضّرة بحب</h2>
+                                    <p class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.4s">From handmade pasta to wood-fired pizza, Palombini brings the true taste of Italy to your table.</p>
+                                    <p class="staggered-animation" dir="rtl" lang="ar" data-animation="fadeInUp" data-animation-delay="0.5s">من الباستا المصنوعة بإيدينا للبيتزا في فرن الحطب، بالومبيني بيقدّم طعم إيطاليا الحقيقي على سفرتكم.</p>
+                                    <a class="btn btn-default rounded-0 staggered-animation" href="{{ route('menu') }}" data-animation="fadeInUp" data-animation-delay="0.6s"><x-bi en="View Menu" ar="اعرض المنيو" /></a>
                                 </div>
                             </div>
                         </div>
@@ -172,10 +228,12 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-7 col-md-12 col-sm-12 text-center">
                                 <div class="banner_content2 text_white">
-                                    <h2 class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.2s">Choose & Savor</h2>
-                                    <p class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.4s">Indulge in suya and other mouthwatering dishes, infused with authentic spices <br class="d-none d-md-block" /> and crafted to delight your taste buds.</p>
-                                    <a class="btn btn-default rounded-0 staggered-animation" href="{{ route('menu') }}" data-animation="fadeInUp" data-animation-delay="0.6s">Order Online</a>
-                                    <a class="btn btn-white rounded-0 staggered-animation" href="{{ route('contact') }}" data-animation="fadeInUp" data-animation-delay="0.6s">Contact Us</a>
+                                    <h2 class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.2s">Fresh Ingredients, Classic Italian Flavor</h2>
+                                    <h2 class="staggered-animation" dir="rtl" lang="ar" data-animation="fadeInUp" data-animation-delay="0.3s">مكونات طازة ونكهة إيطالية كلاسيك</h2>
+                                    <p class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.4s">Every plate is prepared with premium ingredients, balanced flavors, and the signature Palombini Italian touch.</p>
+                                    <p class="staggered-animation" dir="rtl" lang="ar" data-animation="fadeInUp" data-animation-delay="0.5s">كل طبق بيتحضّر بمكونات عالية الجودة، ونكهات متوازنة، ولمسة بالومبيني الإيطالية المميزة.</p>
+                                    <a class="btn btn-default rounded-0 staggered-animation" href="{{ route('menu') }}" data-animation="fadeInUp" data-animation-delay="0.6s"><x-bi en="View Menu" ar="اعرض المنيو" /></a>
+                                    <a class="btn btn-default rounded-0 staggered-animation" href="{{ route('customer.cart') }}" data-animation="fadeInUp" data-animation-delay="0.6s"><x-bi en="Book a Table" ar="احجز طاولة" /></a>
                                 </div>
                             </div>
                         </div>
@@ -188,11 +246,14 @@
                         <div class="row justify-content-md-end">
                             <div class="col-lg-6 col-md-12 col-sm-12">
                                 <div class="banner_content2 text_white">
-                                    <h4 class="staggered-animation text_default" data-animation="fadeInUp" data-animation-delay="0.2s">Are You Ready</h4>
-                                    <h2 class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.2s">Enjoy Every Bite</h2>
-                                    <p class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.4s">From sizzling suya to hearty stews, enjoy African dishes made to bring joy <br class="d-none d-md-block" /> to every occasion and appetite.</p>
-                                    <a class="btn btn-default rounded-0 staggered-animation" href="{{ route('menu') }}" data-animation="fadeInUp" data-animation-delay="0.6s">Order Online</a>
-                                    <a class="btn btn-white rounded-0 staggered-animation" href="{{ route('contact') }}" data-animation="fadeInUp" data-animation-delay="0.6s">Contact Us</a>
+                                    <h4 class="staggered-animation text_default" data-animation="fadeInUp" data-animation-delay="0.2s">Palombini Italian Experience</h4>
+                                    <h4 class="staggered-animation text_default" dir="rtl" lang="ar" data-animation="fadeInUp" data-animation-delay="0.25s">تجربة بالومبيني الإيطالية</h4>
+                                    <h2 class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.3s">Your Favorite Italian Moment Starts Here</h2>
+                                    <h2 class="staggered-animation" dir="rtl" lang="ar" data-animation="fadeInUp" data-animation-delay="0.35s">لحظتكم الإيطالية المفضلة بتبدأ من هنا</h2>
+                                    <p class="staggered-animation" data-animation="fadeInUp" data-animation-delay="0.4s">Enjoy a complete dine-in experience with warm hospitality and comforting Italian dishes made fresh for your table.</p>
+                                    <p class="staggered-animation" dir="rtl" lang="ar" data-animation="fadeInUp" data-animation-delay="0.5s">استمتعوا بتجربة أكل داخل المطعم مع ضيافة دافئة وأطباق إيطالية مريحة متحضرة طازة لسفرتكم.</p>
+                                    <a class="btn btn-default rounded-0 staggered-animation" href="{{ route('menu') }}" data-animation="fadeInUp" data-animation-delay="0.6s"><x-bi en="View Menu" ar="اعرض المنيو" /></a>
+                                    <a class="btn btn-default rounded-0 staggered-animation" href="{{ route('customer.cart') }}" data-animation="fadeInUp" data-animation-delay="0.6s"><x-bi en="Book a Table" ar="احجز طاولة" /></a>
                                 </div>
                             </div>
                         </div>
@@ -209,58 +270,34 @@
  
  
 
-    <!-- START SECTION OUR MENU -->
+    <!-- START SECTION INTRO -->
     <div class="section pb_70">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-xl-6 col-lg-8">
+                <div class="col-xl-8 col-lg-10">
                     <div class="heading_s1 animation text-center" data-animation="fadeInUp" data-animation-delay="0.02s">
-                        <div class="sub_heading font_style1">Special Food</div>
-                        <h2>from Our Menu</h2>
+                        <div class="sub_heading font_style1">Welcome to Palombini Cafe</div>
+                        <div class="sub_heading font_style1" dir="rtl" lang="ar">أهلًا بيكم في Palombini Cafe</div>
+                        <h2>Your Italian Moment, Every Day</h2>
+                        <h2 dir="rtl" lang="ar">لحظتكم الإيطالية كل يوم</h2>
                     </div>
                     <div class="small_divider clearfix"></div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-  
-                    <div class="row">
-
-   
-                        @forelse ($menus as $menu) 
-
-
-                        <div class="d-flex col-lg-3 col-sm-6">
-                            <div class="single_product">
-                                <a href="{{ route('menu.item',$menu->id) }}">
-                                <div class="menu_product_img">
-                                    <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }} img" >
-                                </div>
-                                </a>
-                                <div class="menu_product_info">
-                                    <div class="title">
-                                        <h5><a href="{{ route('menu.item',$menu->id) }}"> {{ $menu->name }}</a></h5>
-                                    </div>
-                                    <p>{!! $site_settings->currency_symbol !!}{{ number_format($menu->price, 2) }}</p>
-                                </div>                    
-                            </div>
-                        </div>
-                        
-                        @empty
-                        <b> No Menu available. </b>
-                        @endforelse                       
-
-    
-
-                    </div>
-
-
-
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-10 text-center animation" data-animation="fadeInUp" data-animation-delay="0.04s">
+                    <p>
+                        Palombini Cafe brings authentic Italian dining into a warm, modern space—serving handcrafted pasta, wood-fired pizza, rich espresso, and timeless desserts for every cozy meal or special gathering.<br>
+                        <span dir="rtl" lang="ar">Palombini Cafe بيقدم الأكل الإيطالي الأصلي في مكان دافي وعصري—من الباستا المصنوعة بإيدينا والبيتزا في فرن الحطب، لإسبريسو غني وحلويات كلاسيكية، لكل أكلة حلوة أو مناسبة مميزة.</span>
+                    </p>
+                    <a class="btn btn-default rounded-0 mt-2 mr-2" href="{{ route('menu') }}"><x-bi en="Explore Menu" ar="استكشف المنيو" /></a>
+                    <a class="btn btn-default rounded-0 mt-2 mr-2" href="{{ route('about') }}"><x-bi en="Our Story" ar="قصتنا" /></a>
+                    <a class="btn btn-default rounded-0 mt-2" href="{{ route('contact') }}"><x-bi en="Visit Us" ar="زورونا" /></a>
                 </div>
             </div>
         </div>
     </div>
-    <!-- START SECTION OUR MENU -->
+    <!-- END SECTION INTRO -->
 @if(config('services.table_booking.allow'))
 <!-- START SECTION CTA -->
 <div class="section background_bg" data-img-src="/assets/images/cta_bg.jpg">

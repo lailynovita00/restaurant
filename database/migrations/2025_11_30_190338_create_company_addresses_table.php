@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -11,17 +12,21 @@ return new class extends Migration
         /**
          * STEP 1 — DROP FK + COLUMN (old relationship)
          */
-        Schema::table('orders', function (Blueprint $table) {
-            if (Schema::hasColumn('orders', 'pickup_address_id')) {
-                // Drop old FK (if exists)
+        if (Schema::hasColumn('orders', 'pickup_address_id')) {
+            Schema::table('orders', function (Blueprint $table) {
+                // Try to drop foreign key safely
                 try {
-                    $table->dropForeign(['pickup_address_id']);
-                } catch (\Exception $e) {}
-
-                // Drop old column
-                $table->dropColumn('pickup_address_id');
-            }
-        });
+                    DB::statement('ALTER TABLE orders DROP FOREIGN KEY orders_pickup_address_id_foreign');
+                } catch (\Exception $e) {
+                    // FK doesn't exist, continue
+                }
+                
+                // Drop column if it exists
+                if (Schema::hasColumn('orders', 'pickup_address_id')) {
+                    $table->dropColumn('pickup_address_id');
+                }
+            });
+        }
 
         /**
          * STEP 2 — DROP OLD restaurant_addresses TABLE
@@ -32,9 +37,11 @@ return new class extends Migration
          * STEP 3 — ADD pickup_address_id AGAIN (for new company_addresses table)
          */
         Schema::table('orders', function (Blueprint $table) {
-            $table->unsignedBigInteger('pickup_address_id')
-                  ->nullable()
-                  ->after('delivery_address_id');
+            if (!Schema::hasColumn('orders', 'pickup_address_id')) {
+                $table->unsignedBigInteger('pickup_address_id')
+                      ->nullable()
+                      ->after('delivery_address_id');
+            }
         });
 
         /**

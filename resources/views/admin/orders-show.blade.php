@@ -6,6 +6,29 @@
     <link rel="stylesheet" href="/admin_resources/vendors/typicons.font/font/typicons.css">
     <link rel="stylesheet" href="/admin_resources/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="/admin_resources/css/vertical-layout-light/style.css">
+    <style>
+        .proof-preview-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .proof-preview-thumb {
+            width: 180px;
+            max-width: 100%;
+            border-radius: 12px;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .proof-preview-frame {
+            width: 100%;
+            max-width: 520px;
+            height: 360px;
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+        }
+    </style>
     
 @endpush
 
@@ -30,22 +53,6 @@
 <link rel="stylesheet" href="/admin_resources/css/small-box.css">
 
 
-<script>
-    $(document).ready(function() {
-        $('#copy_session_id').click(function() {
-            var sessionIdInput = $('#session_id');
-
-            sessionIdInput.select();
-            document.execCommand('copy');
-            window.getSelection().removeAllRanges();
-            $('#copy-alert').fadeIn();
-            setTimeout(function() {
-                $('#copy-alert').fadeOut();
-            }, 3000);
-        });
-    });
-</script>
-
 @endpush
 
 
@@ -63,24 +70,19 @@
 
       @include('partials.order-stats')
 
-        @if(!is_null($order->status_online_pay) && $order->status_online_pay == 'unpaid')
-        <div class="alert alert-danger d-flex align-items-center" role="alert">
-            <i class="fas fa-exclamation-circle mr-2"></i>
-            <div>
-                This order payment has not been confirmed.
-            </div>
-        </div>
-        @endif
-
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span>Order Details - #{{ $order->order_no }} </span>
+                <span>Order Details - #{{ $order->order_sequence ?? $order->id }} </span>
 
-                @if ($order->status_online_pay == 'paid' || is_null($order->status_online_pay))
+                <div class="d-flex align-items-center" style="gap: 8px;">
+                    <a href="{{ route('admin.order.receipt', $order->id) }}" target="_blank" class="btn btn-outline-dark btn-sm">
+                        <i class="fa fa-print"></i> Print Receipt
+                    </a>
+
                     @if ($order->status !== 'completed' && $order->status !== 'cancelled')
-                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal">Update Order</button>
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal"><x-bi en="Update Order" ar="تحديث الطلب" /></button>
                     @endif
-                @endif
+                </div>
             
         
             </div>
@@ -90,16 +92,16 @@
                         <table class="table table-bordered mt-2">    
                             <tr>
                                 <th>Order No.</th>
-                                <td>#{{ $order->order_no }}</td>
+                                <td>#{{ $order->order_sequence ?? $order->id }}</td>
                             </tr>                               
                  
                             <tr>
                                 <th>Total Paid</th>
-                                <td>{!! $site_settings->currency_symbol !!}{{ number_format($order->total_price + ($order->delivery_fee ?? 0), 2) }}</td>
+                                <td>{{ number_format($order->total_price + ($order->delivery_fee ?? 0), 2) }} {!! $site_settings->currency_symbol !!}</td>
                             </tr>
                             <tr>
                                 <th>Delivery Fee</th>
-                                <td>{{ $order->delivery_fee === null ? 'N/A' : html_entity_decode($site_settings->currency_symbol) . number_format($order->delivery_fee, 2) }}</td>
+                                <td>{{ $order->delivery_fee === null ? 'N/A' : number_format($order->delivery_fee, 2) . ' ' . html_entity_decode($site_settings->currency_symbol) }}</td>
                             </tr>
                             <tr>
                                 <th>Delivery Distance</th>
@@ -107,7 +109,7 @@
                             </tr>
                             <tr>
                                 <th>Price Per Mile</th>
-                                <td> {{ $order->price_per_mile === null ? 'N/A' : html_entity_decode($site_settings->currency_symbol) . number_format($order->price_per_mile,2) }}</td>                              
+                                <td> {{ $order->price_per_mile === null ? 'N/A' : number_format($order->price_per_mile,2) . ' ' . html_entity_decode($site_settings->currency_symbol) }}</td>                              
                             </tr>
                             
                         </table>
@@ -123,60 +125,102 @@
                                 <td>{{ $order->updated_at->format('g:i A -  j M, Y') }}</td>
                             </tr>                             
                             <tr>
-                                <th>Payment Method</th>
-                                <td>{{ $order->payment_method }}</td>
-                            </tr>              
-                            <tr>
                                 <th>Order Type</th>
-                                <td>{{ ucfirst($order->order_type) }}</td>
+                                <td>
+                                    @if($order->order_type === 'delivery')
+                                        Online
+                                    @elseif($order->order_type === 'instore')
+                                        Dine In
+                                    @else
+                                        {{ ucfirst($order->order_type) }}
+                                    @endif
+                                </td>
                             </tr>                  
+
+                            <tr>
+                                <th>Payment Method</th>
+                                <td>{{ strtoupper(str_replace('_', ' ', (string) $order->payment_method)) ?: 'N/A' }}</td>
+                            </tr>
+
+                            @if($order->order_type === 'delivery')
+                                <tr>
+                                    <th>Customer Name</th>
+                                    <td>{{ $order->online_customer_name ?: ($order->customer?->first_name ?? 'N/A') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Phone Number</th>
+                                    <td>{{ $order->online_customer_phone ?: ($order->customer?->phone_number ?? 'N/A') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Delivery Address</th>
+                                    <td>{{ $order->online_delivery_address ?: ($order->deliveryAddressWithTrashed?->full_address ?? 'N/A') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Transfer Proof</th>
+                                    <td>
+                                        @if($order->transfer_proof_path)
+                                            @php
+                                                $proofUrl = route('admin.order.transfer-proof', $order->id);
+                                                $proofExtension = strtolower(pathinfo($order->transfer_proof_path, PATHINFO_EXTENSION));
+                                                $isImageProof = in_array($proofExtension, ['jpg', 'jpeg', 'png', 'webp', 'gif']);
+                                            @endphp
+
+                                            <div class="proof-preview-wrap">
+                                                @if($isImageProof)
+                                                    <a href="{{ $proofUrl }}" target="_blank">
+                                                        <img src="{{ $proofUrl }}" alt="Transfer Proof" class="proof-preview-thumb">
+                                                    </a>
+                                                @else
+                                                    <a href="{{ $proofUrl }}" target="_blank" class="btn btn-sm btn-outline-primary" style="width: fit-content;">Open PDF Proof</a>
+                                                @endif
+
+                                                <a href="{{ $proofUrl }}" target="_blank" class="btn btn-sm btn-outline-primary" style="width: fit-content;">View Full Proof</a>
+
+                                                @if($isImageProof)
+                                                    <img src="{{ $proofUrl }}" alt="Transfer Proof Preview" class="proof-preview-frame" style="object-fit: contain; background:#f8f9fa;">
+                                                @else
+                                                    <iframe src="{{ $proofUrl }}" class="proof-preview-frame"></iframe>
+                                                @endif
+                                            </div>
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
 
                             <tr>
                                 <th>Status</th>
                                 <td>
 
 
-                                    @if(!is_null($order->status_online_pay) && $order->status_online_pay === 'unpaid')
-                                    <span class="badge badge-danger"><i class="fa fa-exclamation-circle"></i> unpaid</span>
-                                    @else
-                                        @switch($order->status)
-                                            @case('pending')
-                                                <span class="badge badge-danger"><i class="fa fa-exclamation-circle"></i> {{ ucfirst($order->status) }}</span>
-                                                @break
-                                            @case('completed')
-                                                <span class="badge badge-success"><i class="fa fa-check"></i> {{ ucfirst($order->status) }}</span>
-                                                @break
-                                            @default
-                                                {{ ucfirst($order->status) }}
-                                        @endswitch
-                                    @endif
+                                    @switch($order->status)
+                                        @case('pending')
+                                            <span class="badge badge-danger"><i class="fa fa-exclamation-circle"></i> {{ ucfirst($order->status) }}</span>
+                                            @break
+                                        @case('completed')
+                                            <span class="badge badge-success"><i class="fa fa-check"></i> {{ ucfirst($order->status) }}</span>
+                                            @break
+                                        @case('active')
+                                            <span class="badge badge-warning"><i class="fa fa-clock"></i> {{ ucfirst($order->status) }}</span>
+                                            @break
+                                        @default
+                                            {{ ucfirst($order->status) }}
+                                    @endswitch
                                                      
                                 </td>
                                 
                             </tr>
+
+                            @if(!empty($order->cancellation_reason))
+                                <tr>
+                                    <th>Cancellation Reason</th>
+                                    <td>{{ $order->cancellation_reason }}</td>
+                                </tr>
+                            @endif
                         </table>
                     </div>
                 </div>
-
-                @if (!is_null($order->session_id))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert" id="copy-alert" style="display: none;">
-                        SESSION ID COPIED TO CLIPBOARD
-                    </div>
-
-                    <div class="form-group mt-3">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Payment Session ID:</span>
-                              </div>
-                            <input type="text" class="form-control" id="session_id" value="{{ $order->session_id }}" readonly>
-                            <div class="input-group-append">
-                                <button id="copy_session_id" class="btn btn-sm btn-light" type="button">
-                                    <i class="fa fa-copy"></i> 
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                @endif
 
 
             </div>
@@ -201,15 +245,32 @@
                     <tbody>
                         @foreach ($order->orderItems as $item)
                             <tr>
-                                <td><i class="fa fa-circle"></i> {{ $item->menu_name }}</td>
+                                <td>
+                                    <i class="fa fa-circle"></i> {{ $item->menu_name_en ?? $item->menu_name }}
+                                    @if(!empty($item->menu_name_ar) && $item->menu_name_ar !== ($item->menu_name_en ?? $item->menu_name))
+                                        <div dir="rtl" lang="ar" style="font-size: 0.8em; margin-top: 2px;">{{ $item->menu_name_ar }}</div>
+                                    @endif
+                                    @if(!empty($item->sauce_name))
+                                        <div style="font-size: 0.8em; margin-top: 2px; color:#6c757d;">
+                                            Sauce: {{ $item->sauce_name }}
+                                            @if(!empty($item->sauce_name_ar)) / <span dir="rtl" lang="ar">{{ $item->sauce_name_ar }}</span>@endif
+                                        </div>
+                                    @endif
+                                    @if(!empty($item->side_names) && is_array($item->side_names))
+                                        <div style="font-size: 0.8em; margin-top: 2px; color:#6c757d;">
+                                            Sides: {{ implode(', ', array_filter($item->side_names)) }}
+                                            @if(!empty($item->side_names_ar) && is_array($item->side_names_ar)) / <span dir="rtl" lang="ar">{{ implode('، ', array_filter($item->side_names_ar)) }}</span>@endif
+                                        </div>
+                                    @endif
+                                </td>
                                 <td>x {{ $item->quantity }}</td>
-                                <td>{!! $site_settings->currency_symbol !!}{{ number_format($item->subtotal, 2) }}</td>
+                                <td>{{ number_format($item->subtotal, 2) }} {!! $site_settings->currency_symbol !!}</td>
                             </tr>
                         @endforeach
                         <tr style="border:2px solid #000">
                             <td><b>TOTAL</b></td>
                             <td> </td>
-                            <td><b>{!! $site_settings->currency_symbol !!} {{ number_format($order->total_price, 2)  }}</b></td>
+                            <td><b>{{ number_format($order->total_price, 2)  }} {!! $site_settings->currency_symbol !!}</b></td>
                         </tr>
                     </tbody>
                 </table>
@@ -224,117 +285,7 @@
 
 
    
-        <div class="row mt-4">
-            <div class="col-lg-6 d-flex grid-margin stretch-card">
-         
-                <div class="card">
-                    <div class="card-header">
-                        <h5>User Information</h5>
-                    </div>
-                    <div class="card-body">
-                        <!-- Table for User Info -->
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td><strong>Created By:</strong></td>
-                                    <td>
-                                        @if($order->createdByUser)
-                                            {{ $order->createdByUser->first_name . " " . $order->createdByUser->last_name }}
-                                        @else
-                                            Not Available
-                                        @endif
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Updated By:</strong></td>
-                                    <td>
-                                        @if($order->updatedByUser)
-                                            {{ $order->updatedByUser->first_name . " " . $order->updatedByUser->last_name }}
-                                        @else
-                                            Not Available
-                                        @endif
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
         
-            </div>
-            <div class="col-lg-6 d-flex grid-margin stretch-card">
-              
-                <div class="card ">
-                    <div class="card-header">
-                        <h5>Customer Information</h5>
-                    </div>
-                    <div class="card-body">
-                        @if($order->customer)
-                            <!-- Customer Table -->
-                            <table class="table table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Name:</strong></td>
-                                        <td>{{ $order->customer->first_name . " " . $order->customer->last_name }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Email:</strong></td>
-                                        <td>{{ $order->customer->email }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Phone Number:</strong></td>
-                                        <td>{{ $order->customer->phone_number }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        @else
-                            <p><strong>N/A</strong> </p>
-                        @endif
-
-
-                        @if($order->customer)
-
-                            @if($order->order_type === 'pickup' && $order->pickupAddress)
-                                <table class="table table-bordered mt-3">
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>Pickup Location</strong></td>
-                                            <td>{{ $order->pickupAddress->full_address ?? '' }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                            @elseif($order->deliveryAddressWithTrashed)
-                                <table class="table table-bordered mt-3">
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>Delivery Address</strong></td>
-                                            <td>{{ $order->deliveryAddressWithTrashed->full_address ?? '' }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                            @else
-                                <table class="table table-bordered mt-3">
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>Address</strong></td>
-                                            <td class="text-muted">No address information for this order.</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            @endif
-
-                        @endif
-                                                    
-                            
-                            
-                    </div>
-                </div>
-                
-           
-            </div>
-          </div>
      <hr/>
 
      @if ($loggedInUser->role == "global_admin")
@@ -387,7 +338,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="updateModalLabel">Update Order Status</h5>
+                        <h5 class="modal-title" id="updateModalLabel">Update Order Status | تحديث حالة الطلب</h5>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -396,18 +347,46 @@
                         <form action="{{ route('admin.orders.update', $order->id) }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="orderStatus">Order Status</label>
+                                <label for="orderStatus">Order Status | حالة الطلب</label>
                                 <select class="form-control" id="orderStatus" name="status">
-                                    <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Completed</option>
-                                    <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                    <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Completed | مكتمل</option>
+                                    <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled | ملغي</option>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <div class="form-group mt-2" id="cancellationReasonWrap" style="display: none;">
+                                <label for="cancellationReason">Cancellation Reason (Optional) | سبب الإلغاء (اختياري)</label>
+                                <textarea class="form-control" id="cancellationReason" name="cancellation_reason" rows="3" maxlength="500" placeholder="Write reason here (optional)">{{ old('cancellation_reason', $order->cancellation_reason) }}</textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary"><x-bi en="Update" ar="تحديث" /></button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+
+        <script>
+            (function () {
+                const statusSelect = document.getElementById('orderStatus');
+                const reasonWrap = document.getElementById('cancellationReasonWrap');
+                const reasonInput = document.getElementById('cancellationReason');
+
+                if (!statusSelect || !reasonWrap || !reasonInput) {
+                    return;
+                }
+
+                function toggleCancellationReason() {
+                    const isCancelled = statusSelect.value === 'cancelled';
+                    reasonWrap.style.display = isCancelled ? 'block' : 'none';
+
+                    if (!isCancelled) {
+                        reasonInput.value = '';
+                    }
+                }
+
+                statusSelect.addEventListener('change', toggleCancellationReason);
+                toggleCancellationReason();
+            })();
+        </script>
 
 
 

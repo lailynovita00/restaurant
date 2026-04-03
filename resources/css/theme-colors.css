@@ -1,0 +1,64 @@
+/* 
+  Theme Color Palette for Palombini Cafe
+  Coffee/Brown Theme Color Scheme
+  
+  CSV: 92824e,50301c,f1ddb9,cbb88c,765e39,a38a6a,5e4127,887446
+*/
+
+:root {
+  /* Primary Colors */
+  --color-primary: #92824e;           /* Main brown/olive */
+  --color-primary-dark: #50301c;      /* Dark brown */
+  --color-primary-light: #f1ddb9;     /* Light cream/beige */
+  
+  /* Secondary Colors */
+  --color-secondary: #cbb88c;         /* Tan/beige */
+  --color-accent: #765e39;            /* Medium brown */
+  --color-accent-light: #a38a6a;      /* Light brown */
+  
+  /* Additional Colors */
+  --color-dark: #5e4127;              /* Very dark brown */
+  --color-gold: #887446;              /* Gold/tan */
+  
+  /* Neutral Colors */
+  --color-text: #50301c;              /* Dark brown text */
+  --color-text-secondary: #765e39;    /* Medium brown text */
+  --color-background: #ffffff;        /* White background */
+  --color-border: #e0d5c7;            /* Light border */
+}
+
+/* Utility Classes for Theme Colors */
+.text-primary { color: var(--color-primary); }
+.text-primary-dark { color: var(--color-primary-dark); }
+.bg-primary { background-color: var(--color-primary); }
+.bg-primary-dark { background-color: var(--color-primary-dark); }
+.bg-primary-light { background-color: var(--color-primary-light); }
+.border-primary { border-color: var(--color-primary); }
+
+.hover\:text-primary:hover { color: var(--color-primary); }
+.hover\:bg-primary:hover { background-color: var(--color-primary); }
+
+/* Button Styles with Theme */
+.btn-theme {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.btn-theme:hover {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+.btn-theme-outline {
+  background-color: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  transition: all 0.3s ease;
+}
+
+.btn-theme-outline:hover {
+  background-color: var(--color-primary);
+  color: #fff;
+}

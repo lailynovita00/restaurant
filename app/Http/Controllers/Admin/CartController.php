@@ -21,7 +21,7 @@ class CartController extends Controller
     
     public function index()
     {
-        $menus = Menu::all();
+        $menus = Menu::with(['category.sauces', 'category.sides'])->get();
         return view('admin.pos-index',compact('menus'));
     } 
 

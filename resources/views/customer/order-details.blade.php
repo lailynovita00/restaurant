@@ -31,7 +31,7 @@
     <!-- Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-red.css">
+    <link id="layoutstyle" rel="stylesheet" href="/assets/color/theme-brown.css">
 
     <style>
         .acct {
@@ -171,7 +171,13 @@
                                 {{ ucfirst($status) }}
                             </span>
                             <span class="badge-type">
-                                {{ ucfirst($order->order_type ?? 'online') }}
+                                @if(($order->order_type ?? null) === 'delivery')
+                                    Online
+                                @elseif(($order->order_type ?? null) === 'instore')
+                                    Dine In
+                                @else
+                                    {{ ucfirst($order->order_type ?? 'online') }}
+                                @endif
                             </span>
                             @if($order->status_online_pay)
                                 <span class="badge-status {{ $order->status_online_pay === 'paid' ? 'completed' : 'pending' }}">
@@ -184,7 +190,7 @@
                     <div class="text-md-end">
                         <div class="text-dark-50 small">Total</div>
                         <div style="font-size:1.4rem; font-weight:800;">
-                            {!! $site_settings->currency_symbol ?? '£' !!}{{ number_format($order->total_price, 2) }}
+                            {{ number_format($order->total_price, 2) }} {!! $site_settings->currency_symbol ?? '£' !!}
                         </div>
                         @if($order->payment_method)
                             <div class="text-dark-50 small mt-1">
@@ -221,10 +227,24 @@
                                 <tbody>
                                     @foreach($order->orderItems as $item)
                                         <tr>
-                                            <td>{{ $item->menu_name }}</td>
+                                            <td>
+                                                {{ $item->menu_name }}
+                                                @if(!empty($item->sauce_name))
+                                                    <div style="font-size: 0.85em; color: #6c757d;">
+                                                        Sauce: {{ $item->sauce_name }}
+                                                        @if(!empty($item->sauce_name_ar)) / <span dir="rtl" lang="ar">{{ $item->sauce_name_ar }}</span>@endif
+                                                    </div>
+                                                @endif
+                                                @if(!empty($item->side_names) && is_array($item->side_names))
+                                                    <div style="font-size: 0.85em; color: #6c757d;">
+                                                        Sides: {{ implode(', ', array_filter($item->side_names)) }}
+                                                        @if(!empty($item->side_names_ar) && is_array($item->side_names_ar)) / <span dir="rtl" lang="ar">{{ implode('، ', array_filter($item->side_names_ar)) }}</span>@endif
+                                                    </div>
+                                                @endif
+                                            </td>
                                             <td class="text-center">{{ $item->quantity }}</td>
                                             <td class="text-end">
-                                                {!! $site_settings->currency_symbol ?? '£' !!}{{ number_format($item->subtotal, 2) }}
+                                                {{ number_format($item->subtotal, 2) }} {!! $site_settings->currency_symbol ?? '£' !!}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -232,8 +252,8 @@
                                     <tr>
                                         <td colspan="2" class="text-end fw-semibold">Items Subtotal</td>
                                         <td class="text-end fw-semibold">
-                                            {!! $site_settings->currency_symbol ?? '£' !!}
                                             {{ number_format($order->total_price - ($order->delivery_fee ?? 0), 2) }}
+                                            {!! $site_settings->currency_symbol ?? '£' !!}
                                         </td>
                                     </tr>
 
@@ -241,7 +261,7 @@
                                         <tr>
                                             <td colspan="2" class="text-end">Delivery Fee</td>
                                             <td class="text-end">
-                                                {!! $site_settings->currency_symbol ?? '£' !!}{{ number_format($order->delivery_fee, 2) }}
+                                                {{ number_format($order->delivery_fee, 2) }} {!! $site_settings->currency_symbol ?? '£' !!}
                                             </td>
                                         </tr>
                                     @endif
@@ -266,12 +286,32 @@
                                     <div>{{ $order->deliveryAddressWithTrashed->full_address ?? '' }}</div>
                      
                                 </div>
+                            @elseif($order->online_delivery_address)
+                                <div class="addr-card">
+                                    <div class="fw-semibold mb-1">Delivery Address</div>
+                                    <div>{{ $order->online_delivery_address }}</div>
+                                </div>
                             @else
                                 <div class="addr-card muted">
                                     No address information for this order.
                                 </div>
                             @endif
                         </div>
+
+                        @if($order->payment_method)
+                        <div class="mb-3">
+                            <div class="section-hd">Payment</div>
+                            <div class="addr-card">
+                                <div class="fw-semibold mb-1">Method</div>
+                                <div>{{ strtoupper(str_replace('_', ' ', $order->payment_method)) }}</div>
+
+                                @if($order->transfer_proof_path)
+                                    <hr class="my-2">
+                                    <a href="{{ asset('storage/' . $order->transfer_proof_path) }}" target="_blank" class="btn btn-sm btn-outline-secondary">View Transfer Proof</a>
+                                @endif
+                            </div>
+                        </div>
+                        @endif
 
                         @if($order->additional_info)
                         <div class="mb-3">

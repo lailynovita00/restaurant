@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\OrderSettings;
 use App\Models\CompanyAddress;
 use App\Helpers\DistanceHelper;
+use App\Services\StockService;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -45,13 +46,13 @@ class CheckoutController extends Controller
 
         // Get Site Settings
         $site_settings  = SiteSetting::latest()->first();
-        $this->currencyCode  = strtolower($site_settings->currency_code);
+        $this->currencyCode  = strtolower($site_settings->currency_code ?? 'usd');
         $this->companyAddress = CompanyAddress::first();
 
         //Order Settings
         $order_settings = OrderSettings::first();
-        $this->price_per_mile = $order_settings->price_per_mile;
-        $this->distance_limit_in_miles = $order_settings->distance_limit_in_miles;
+        $this->price_per_mile = (float) ($order_settings->price_per_mile ?? 0);
+        $this->distance_limit_in_miles = (float) ($order_settings->distance_limit_in_miles ?? 0);
  
     }
 
@@ -91,13 +92,15 @@ class CheckoutController extends Controller
     {
         $request->validate(['method' => 'required|in:pickup,delivery']);
 
+        $fulfilmentMethod = (string) $request->input('method');
+
         $data = session(self::SESSION_KEY, []);
-        $data['fulfilment'] = $request->method;
+        $data['fulfilment'] = $fulfilmentMethod;
         // reset dependent choices if user changes their mind
         unset($data['pickup_location_id'], $data['delivery']);
         session([self::SESSION_KEY => $data]);
 
-        return $request->method === 'pickup'
+        return $fulfilmentMethod === 'pickup'
             ? redirect()->route('customer.checkout.pickup')
             : redirect()->route('customer.checkout.delivery');
     }
@@ -433,13 +436,16 @@ class CheckoutController extends Controller
             $qty = (int) ($item['quantity'] ?? 1);
 
             $order->orderItems()->create([
+                'menu_id' => $item['id'] ?? null,
                 'menu_name' => $item['name'],
                 'quantity'  => $qty,
                 'subtotal'  => $item['price'] * $qty,
+                'sauce_name' => $item['sauce_name'] ?? null,
+                'sauce_name_ar' => $item['sauce_name_ar'] ?? null,
+                'side_names' => $item['side_names'] ?? null,
+                'side_names_ar' => $item['side_names_ar'] ?? null,
             ]);
         }
-
-
 
         // Initialize the line_items array
         $line_items = [];
@@ -554,7 +560,173 @@ class CheckoutController extends Controller
         return redirect($data['data']['authorization_url']);
     }
 
+    public function dineInCheckout(Request $request)
+    {
+        $request->validate([
+            'table_number' => 'required|integer|min:1',
+            'customer_phone' => 'nullable|string|max:30',
+            'additional_info' => 'nullable|string|max:500',
+        ]);
 
+        $user = Auth::check() ? Auth::user() : null;
+        $customerUserId = ($user && ($user->role ?? null) === 'customer') ? $user->id : null;
 
+        // Ensure there is still a cart
+        if (!session()->has($this->cartkey)) {
+            return redirect()->route('customer.cart')->withErrors('Your cart is empty. Please add items to your cart before checking out.');
+        }
+
+        $cart_items = session()->get($this->cartkey, []);
+
+        if (empty($cart_items)) {
+            return redirect()->route('customer.cart')->withErrors('Your cart is empty. Please add items to your cart before checking out.');
+        }
+
+        // Recalculate subtotal
+        $subtotal = array_reduce($cart_items, function ($carry, $item) {
+            return $carry + ($item['price'] * $item['quantity']);
+        }, 0);
+
+        // Generate order number
+        $order_no = $this->generateOrderNumber();
+
+        // Create the order
+        $order = Order::create([
+            'order_no' => $order_no,
+            'user_id' => $customerUserId,
+            'order_type' => 'instore',
+            'created_by_user_id' => null,
+            'updated_by_user_id' => null,
+            'total_price' => $subtotal,
+            'status' => 'pending', // Use existing enum value available in current schema
+            'status_online_pay' => 'paid', // No payment needed for dine-in
+            'session_id' => session()->getId(),
+            'payment_method' => 'dinein',
+            'additional_info' => $request->input('additional_info'),
+            'delivery_fee' => 0,
+            'delivery_distance' => null,
+            'price_per_mile' => null,
+            'delivery_address_id' => null,
+            'pickup_address_id' => null,
+            'table_number' => $request->input('table_number'),
+            'customer_phone' => $request->input('customer_phone'),
+        ]);
+
+        // Create order items
+        foreach ($cart_items as $item) {
+            $qty = (int) ($item['quantity'] ?? 1);
+
+            $order->orderItems()->create([
+                'menu_id' => $item['id'] ?? null,
+                'menu_name' => $item['name'],
+                'quantity' => $qty,
+                'subtotal' => $item['price'] * $qty,
+                'sauce_name' => $item['sauce_name'] ?? null,
+                'sauce_name_ar' => $item['sauce_name_ar'] ?? null,
+                'side_names' => $item['side_names'] ?? null,
+                'side_names_ar' => $item['side_names_ar'] ?? null,
+            ]);
+        }
+
+        // Reset cart and checkout wizard session so the site behaves like a fresh visit.
+        session()->forget([$this->cartkey, self::SESSION_KEY]);
+
+        return redirect()->route('customer.cart')->with('order_success_popup', [
+            'order_no' => $order_no,
+            'order_type' => 'instore',
+            'table_number' => (int) $request->input('table_number'),
+        ]);
+    }
+
+    public function onlineCheckout(Request $request)
+    {
+        $request->validate([
+            'customer_name' => 'required|string|max:255',
+            'customer_phone' => 'required|string|max:30',
+            'delivery_address' => 'required|string|max:1000',
+            'payment_method' => ['required', Rule::in(['cod', 'instapay', 'vodafone_cash'])],
+            'additional_info' => 'nullable|string|max:500',
+            'transfer_proof' => [
+                Rule::requiredIf(fn () => in_array($request->input('payment_method'), ['instapay', 'vodafone_cash'], true)),
+                'nullable',
+                'file',
+                'mimes:jpg,jpeg,png,pdf,webp',
+                'max:5120',
+            ],
+        ]);
+
+        $user = Auth::check() ? Auth::user() : null;
+        $customerUserId = ($user && ($user->role ?? null) === 'customer') ? $user->id : null;
+
+        if (!session()->has($this->cartkey)) {
+            return redirect()->route('customer.cart')->withErrors('Your cart is empty. Please add items to your cart before checking out.');
+        }
+
+        $cartItems = session()->get($this->cartkey, []);
+
+        if (empty($cartItems)) {
+            return redirect()->route('customer.cart')->withErrors('Your cart is empty. Please add items to your cart before checking out.');
+        }
+
+        $subtotal = array_reduce($cartItems, function ($carry, $item) {
+            return $carry + (($item['price'] ?? 0) * ($item['quantity'] ?? 0));
+        }, 0);
+
+        $orderNo = $this->generateOrderNumber();
+        $paymentMethod = $request->input('payment_method');
+        $transferProofPath = null;
+
+        if ($request->hasFile('transfer_proof')) {
+            $transferProofPath = $request->file('transfer_proof')->store('transfer-proofs', 'public');
+        }
+
+        $order = Order::create([
+            'order_no' => $orderNo,
+            'user_id' => $customerUserId,
+            'order_type' => 'delivery',
+            'created_by_user_id' => null,
+            'updated_by_user_id' => null,
+            'total_price' => $subtotal,
+            'status' => 'pending',
+            'status_online_pay' => $paymentMethod === 'cod' ? 'unpaid' : 'unpaid',
+            'session_id' => session()->getId(),
+            'payment_method' => $paymentMethod,
+            'additional_info' => $request->input('additional_info'),
+            'delivery_fee' => 0,
+            'delivery_distance' => null,
+            'price_per_mile' => null,
+            'delivery_address_id' => null,
+            'pickup_address_id' => null,
+            'table_number' => null,
+            'customer_phone' => trim((string) $request->input('customer_phone')),
+            'online_customer_name' => trim((string) $request->input('customer_name')),
+            'online_customer_phone' => trim((string) $request->input('customer_phone')),
+            'online_delivery_address' => trim((string) $request->input('delivery_address')),
+            'transfer_proof_path' => $transferProofPath,
+        ]);
+
+        foreach ($cartItems as $item) {
+            $qty = (int) ($item['quantity'] ?? 1);
+
+            $order->orderItems()->create([
+                'menu_id' => $item['id'] ?? null,
+                'menu_name' => $item['name'],
+                'quantity' => $qty,
+                'subtotal' => ($item['price'] ?? 0) * $qty,
+                'sauce_name' => $item['sauce_name'] ?? null,
+                'sauce_name_ar' => $item['sauce_name_ar'] ?? null,
+                'side_names' => $item['side_names'] ?? null,
+                'side_names_ar' => $item['side_names_ar'] ?? null,
+            ]);
+        }
+
+        session()->forget([$this->cartkey, self::SESSION_KEY]);
+
+        return redirect()->route('customer.cart')->with('order_success_popup', [
+            'order_no' => $orderNo,
+            'order_type' => 'delivery',
+            'customer_name' => $order->online_customer_name,
+        ]);
+    }
 
 }

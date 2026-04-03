@@ -12,4 +12,9 @@ return [
         'secret' => env('PAYSTACK_SECRET'),
         'public' => env('PAYSTACK_PUBLIC'),
     ],
+
+    'manual_transfer' => [
+        'instapay_number' => env('MANUAL_INSTAPAY_NUMBER', '0100 111 2222'),
+        'vodafone_cash_number' => env('MANUAL_VODAFONE_CASH_NUMBER', '0100 333 4444'),
+    ],
 ];

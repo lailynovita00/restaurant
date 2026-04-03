@@ -23,7 +23,7 @@ class ActivationLinkEmail extends Mailable
     public function build()
     {
         // Generate the activation link using the token
-        $activationLink = route('admin.activate.account', ['token' => $this->token]);
+        $activationLink = route('auth.activate.account', ['token' => $this->token]);
 
         // Pass both the user and the activation link to the view
         return $this->subject('Activate Your Account')

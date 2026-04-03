@@ -11,29 +11,35 @@ class CountrySeeder extends Seeder
     {
         $data = [
             [
-                'name'            => 'Ghana',
-                'iso_code'        => 'GH',
-                'currency_code'   => 'GHS',
-                'currency_symbol' => '₵',    
+                'name' => 'Egypt',
+                'iso_code' => 'EG',
+                'currency_code' => 'EGP',
+                'currency_symbol' => 'LE',
             ],
             [
-                'name'            => 'Nigeria',
-                'iso_code'        => 'NG',
-                'currency_code'   => 'NGN',
-                'currency_symbol' => '₦',    
+                'name' => 'Ghana',
+                'iso_code' => 'GH',
+                'currency_code' => 'GHS',
+                'currency_symbol' => 'GHC',
             ],
             [
-                'name'            => 'United Kingdom',
-                'iso_code'        => 'GB',
-                'currency_code'   => 'GBP',
-                'currency_symbol' => '£',    
+                'name' => 'Nigeria',
+                'iso_code' => 'NG',
+                'currency_code' => 'NGN',
+                'currency_symbol' => 'NGN',
             ],
             [
-                'name'            => 'United States',
-                'iso_code'        => 'US',
-                'currency_code'   => 'USD',
-                'currency_symbol' => '$',    
-            ]
+                'name' => 'United Kingdom',
+                'iso_code' => 'GB',
+                'currency_code' => 'GBP',
+                'currency_symbol' => 'GBP',
+            ],
+            [
+                'name' => 'United States',
+                'iso_code' => 'US',
+                'currency_code' => 'USD',
+                'currency_symbol' => 'USD',
+            ],
         ];
 
         foreach ($data as $row) {
@@ -44,3 +50,4 @@ class CountrySeeder extends Seeder
         }
     }
 }
+

@@ -13,6 +13,10 @@ class RedirectIfNotAdmin
             return redirect()->route('auth.login')->withErrors(['error' => 'Access denied. You must log in to continue.']);
         }
 
+        if (!in_array(Auth::user()->role, ['global_admin', 'admin', 'cashier'])) {
+            return redirect()->route('home')->withErrors(['error' => 'Access denied. You do not have permission to access admin pages.']);
+        }
+
         return $next($request);
     }
 }
