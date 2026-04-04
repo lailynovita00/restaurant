@@ -77,6 +77,104 @@
             display: block;
         }
 
+        .menu-items-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 24px;
+        }
+
+        .menu-item-col {
+            display: flex;
+            min-width: 0;
+        }
+
+        .menu-item-col .single_product {
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        .menu-item-col .menu_product_img img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+        }
+
+        @media (max-width: 991.98px) {
+            .menu-items-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 18px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .menu-items-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .menu-item-col .single_product {
+                border-radius: 8px;
+            }
+
+            .menu-item-col .single_product .menu_product_info {
+                padding: 10px 8px;
+            }
+
+            .menu-item-col .single_product .menu_product_info .title * {
+                font-size: 14px;
+                line-height: 1.35;
+            }
+
+            .menu-item-col .single_product .menu_product_info p {
+                font-size: 12px;
+                line-height: 1.4;
+                margin-bottom: 8px;
+            }
+
+            .menu-item-col .single_product .form-control,
+            .menu-item-col .single_product .btn,
+            .menu-item-col .single_product .form-check-label,
+            .menu-item-col .single_product label {
+                font-size: 11px;
+            }
+
+            .menu-item-col .single_product .form-control {
+                padding: 4px 6px;
+                height: auto;
+            }
+
+            .menu-item-col .single_product .menu-qty-input {
+                max-width: 44px !important;
+                padding-left: 2px;
+                padding-right: 2px;
+            }
+
+            .menu-item-col .single_product .menu-qty-minus,
+            .menu-item-col .single_product .menu-qty-plus {
+                min-width: 28px;
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .menu-item-col .single_product .add-to-cart-menu {
+                width: 100%;
+                padding-left: 6px;
+                padding-right: 6px;
+            }
+        }
+
+        @media (min-width: 430px) and (max-width: 767.98px) {
+            .menu-items-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 540px) and (max-width: 767.98px) {
+            .menu-items-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+
     </style>
 @endpush
 
@@ -369,13 +467,13 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="menu-items-grid">
                             @foreach ($category->menus as $menu)
                                 @php
                                     $categorySauces = $hasSauceTables ? $category->sauces : collect();
                                     $categorySides = $hasSideTables ? $category->sides : collect();
                                 @endphp
-                                <div class="d-flex col-lg-3 col-sm-6">
+                                <div class="menu-item-col">
                                     <div class="single_product">
                                         <a href="{{ route('menu.item', $menu->id) }}">
                                             <div class="menu_product_img">

@@ -240,7 +240,7 @@
                     </div><!-- END CONTAINER-->
                 </div>
             </div>
-            <div class="carousel-item background_bg overlay_bg_40" data-img-src="/assets/images/banner6.jpg">
+            <div class="carousel-item background_bg overlay_bg_40" data-img-src="/assets/images/banner6.jpeg">
                 <div class="banner_slide_content">
                     <div class="container"><!-- STRART CONTAINER -->
                         <div class="row justify-content-md-end">

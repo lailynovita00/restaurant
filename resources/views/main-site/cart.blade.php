@@ -158,6 +158,158 @@
             border-radius: 10px;
             padding: 14px;
         }
+
+        .cart-item-name {
+            display: block;
+            font-weight: 600;
+            line-height: 1.35;
+            color: #50301c;
+        }
+
+        .cart-item-option {
+            font-size: 12px;
+            color: #6c757d;
+            line-height: 1.35;
+            margin-top: 2px;
+        }
+
+        .cart-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .cart-meta-label {
+            color: #6c757d;
+            font-size: 12px;
+            line-height: 1.3;
+        }
+
+        .cart-meta-value {
+            font-weight: 600;
+            color: #2b2b2b;
+            text-align: right;
+        }
+
+        @media (max-width: 767.98px) {
+            .shop_cart_table {
+                overflow: visible;
+            }
+
+            .shop_cart_table .table {
+                display: block;
+            }
+
+            .shop_cart_table tbody#cart-container {
+                display: grid;
+                gap: 12px;
+            }
+
+            .shop_cart_table tbody#cart-container > tr.cart-item-row {
+                display: grid;
+                grid-template-columns: 60px minmax(0, 1fr) auto;
+                grid-template-areas:
+                    "thumb name remove"
+                    "thumb price remove"
+                    "thumb qty qty"
+                    "thumb total total";
+                gap: 6px 10px;
+                padding: 10px 12px;
+                border: 1px solid #eadfcd;
+                border-radius: 12px;
+                background: #fff;
+                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+            }
+
+            .shop_cart_table tbody#cart-container > tr.cart-item-row td {
+                display: block;
+                width: auto;
+                text-align: left;
+                padding: 0;
+                border: 0;
+            }
+
+            .shop_cart_table tbody#cart-container > tr.cart-item-row td::before {
+                display: none;
+            }
+
+            .shop_cart_table td.product-thumbnail {
+                grid-area: thumb;
+                text-align: center;
+            }
+
+            .shop_cart_table td.product-thumbnail img {
+                width: 60px;
+                height: 60px;
+                max-width: 60px;
+                object-fit: cover;
+                border-radius: 10px;
+            }
+
+            .shop_cart_table td.product-name {
+                grid-area: name;
+                text-align: left;
+                padding-right: 4px;
+            }
+
+            .shop_cart_table td.product-price {
+                grid-area: price;
+            }
+
+            .shop_cart_table td.product-quantity {
+                grid-area: qty;
+            }
+
+            .shop_cart_table td.product-subtotal {
+                grid-area: total;
+            }
+
+            .shop_cart_table td.product-remove {
+                grid-area: remove;
+                display: flex;
+                justify-content: flex-end;
+                align-items: flex-start;
+            }
+
+            .shop_cart_table .product-remove .btn {
+                min-width: 32px;
+                height: 32px;
+                padding: 0;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .shop_cart_table .quantity {
+                justify-content: flex-end;
+                gap: 0;
+            }
+
+            .shop_cart_table .quantity input {
+                height: 32px;
+            }
+
+            .shop_cart_table .quantity .minus,
+            .shop_cart_table .quantity .plus {
+                width: 30px;
+                min-width: 30px;
+                padding: 0;
+            }
+
+            .shop_cart_table .quantity .qty {
+                width: 38px;
+                min-width: 38px;
+                padding-left: 4px;
+                padding-right: 4px;
+                text-align: center;
+            }
+
+            .shop_cart_table tfoot td {
+                padding-top: 12px;
+            }
+        }
     </style>
 
 @endpush
@@ -239,28 +391,31 @@
                     total += subtotal;
                     var lineKey = item.line_key || item.id;
                     var sauceLabelAr = item.sauce_name_ar ? (' / ' + item.sauce_name_ar) : '';
-                    var sauceLabel = item.sauce_name ? `<div style="font-size:12px;color:#6c757d;">Sauce: ${item.sauce_name}${sauceLabelAr}</div>` : '';
+                    var sauceLabel = item.sauce_name ? `<div class="cart-item-option">Sauce: ${item.sauce_name}${sauceLabelAr}</div>` : '';
                     var sideNames = Array.isArray(item.side_names) ? item.side_names.filter(Boolean).join(', ') : '';
                     var sideNamesAr = Array.isArray(item.side_names_ar) ? item.side_names_ar.filter(Boolean).join(', ') : '';
                     var sideLabel = sideNames
-                        ? `<div style="font-size:12px;color:#6c757d;">Sides: ${sideNames}${sideNamesAr ? (' / ' + sideNamesAr) : ''}</div>`
+                        ? `<div class="cart-item-option">Sides: ${sideNames}${sideNamesAr ? (' / ' + sideNamesAr) : ''}</div>`
                         : '';
                     // Use the Laravel route helper to generate the URLs
                     var menuItemUrl = "{{ route('menu.item', ':id') }}".replace(':id', item.id);
                 
                     cartContainer.append(`
-                        <tr>
+                        <tr class="cart-item-row">
                             <td class="product-thumbnail"><a href="${menuItemUrl}"><img src="${item.img_src}" alt="product1"></a></td>
-                            <td class="product-name" data-title="Product"><a href="${menuItemUrl}">${item.name}</a>${sauceLabel}${sideLabel}</td>
-                            <td class="product-price" data-title="Price">${price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} {!! $site_settings->currency_symbol !!}</td>
+                            <td class="product-name" data-title="Product"><a href="${menuItemUrl}" class="cart-item-name">${item.name}</a>${sauceLabel}${sideLabel}</td>
+                            <td class="product-price" data-title="Price"><div class="cart-meta-row"><span class="cart-meta-label">Price / السعر</span><span class="cart-meta-value">${price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} {!! $site_settings->currency_symbol !!}</span></div></td>
                             <td class="product-quantity" data-title="Quantity">
-                                <div class="quantity">
-                                    <input type="button" value="-" class="minus">
-                                    <input type="text" min="1" name="quantity" value="${quantity}" title="Qty" class="qty quantity-input" size="4" data-line_key="${lineKey}">
-                                    <input type="button" value="+" class="plus">
+                                <div class="cart-meta-row">
+                                    <span class="cart-meta-label">Quantity / الكمية</span>
+                                    <div class="quantity">
+                                        <input type="button" value="-" class="minus">
+                                        <input type="text" min="1" name="quantity" value="${quantity}" title="Qty" class="qty quantity-input" size="4" data-line_key="${lineKey}">
+                                        <input type="button" value="+" class="plus">
+                                    </div>
                                 </div>
                             </td>
-                            <td class="product-subtotal" data-title="Total">${subtotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} {!! $site_settings->currency_symbol !!}</td>
+                            <td class="product-subtotal" data-title="Total"><div class="cart-meta-row"><span class="cart-meta-label">Total / الإجمالي</span><span class="cart-meta-value">${subtotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} {!! $site_settings->currency_symbol !!}</span></div></td>
                             <td class="product-remove" data-title="Remove"><button class="btn btn-danger btn-sm remove-btn" data-line_key="${lineKey}"  > <i class="ti-close"></i></button></td>
                         </tr>
                     `);
