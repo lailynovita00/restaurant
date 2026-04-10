@@ -107,6 +107,10 @@
             font-weight: 700;
         }
 
+        .meta-main td {
+            font-weight: 700;
+        }
+
         .meta .meta-ar {
             direction: rtl;
             font-size: 8px;
@@ -199,6 +203,11 @@
             color: var(--muted);
             text-align: center;
             line-height: 1.2;
+        }
+
+        .bold-line {
+            font-weight: 700;
+            color: var(--text-color);
         }
 
         .phones {
@@ -399,7 +408,7 @@
 
         <div class="divider"></div>
 
-        <table class="meta">
+        <table class="meta meta-main">
             <tr>
                 <td>Order No</td>
                 <td class="meta-ar">رقم الطلب</td>
@@ -506,7 +515,7 @@
 
         <div class="divider"></div>
 
-        <div class="small center" dir="rtl">تواصل معنا</div>
+        <div class="small center bold-line" dir="rtl">تواصل معنا</div>
 
         <div class="phones">
             @if(!empty($receiptData['phone_numbers']))
@@ -516,7 +525,7 @@
             @endif
         </div>
 
-        <div class="small center" style="margin-top: 6px;">
+        <div class="small center bold-line" style="margin-top: 6px;">
             {{ $receiptData['full_address'] }}
         </div>
 
