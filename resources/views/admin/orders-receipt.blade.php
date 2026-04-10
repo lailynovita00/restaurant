@@ -21,7 +21,7 @@
             margin: 0;
             padding: 12px;
             font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-color);
             background: #f1f1f1;
             line-height: 1.2;
@@ -56,7 +56,7 @@
 
         .name {
             margin: 0;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
             letter-spacing: 0.4px;
             line-height: 1.1;
@@ -64,7 +64,7 @@
 
         .name-sub {
             margin: 1px 0 0;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
             letter-spacing: 1px;
             color: var(--muted);
@@ -82,7 +82,7 @@
         .meta {
             width: 100%;
             border-collapse: collapse;
-            font-size: 10px;
+            font-size: 9px;
         }
 
         .meta td {
@@ -109,14 +109,14 @@
 
         .meta .meta-ar {
             direction: rtl;
-            font-size: 9px;
+            font-size: 8px;
             color: var(--muted);
             text-align: center;
             line-height: 1;
         }
 
         .section-title {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 800;
             text-align: center;
             margin: 2px 0;
@@ -126,7 +126,7 @@
         .section-title .ar {
             display: block;
             direction: rtl;
-            font-size: 9px;
+            font-size: 8px;
             color: var(--muted);
             text-align: center;
         }
@@ -135,7 +135,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 3px;
-            font-size: 10px;
+            font-size: 9px;
         }
 
         .items th,
@@ -146,7 +146,7 @@
         }
 
         .items th {
-            font-size: 9px;
+            font-size: 8px;
             text-align: center;
             line-height: 1.2;
         }
@@ -160,9 +160,16 @@
             font-weight: 700;
         }
 
+        .item-name-main {
+            direction: rtl;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.1;
+        }
+
         .item-name-ar {
             direction: rtl;
-            font-size: 9px;
+            font-size: 8px;
             color: var(--muted);
             margin-top: 0;
             line-height: 1.1;
@@ -174,21 +181,21 @@
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 800;
             line-height: 1.2;
         }
 
         .total .ar {
             direction: rtl;
-            font-size: 8px;
+            font-size: 7px;
             color: var(--muted);
             font-weight: 700;
             text-align: center;
         }
 
         .small {
-            font-size: 9px;
+            font-size: 8px;
             color: var(--muted);
             text-align: center;
             line-height: 1.2;
@@ -196,7 +203,7 @@
 
         .phones {
             text-align: center;
-            font-size: 9px;
+            font-size: 6px;
             font-weight: 700;
             margin-top: 1px;
             line-height: 1.2;
@@ -207,20 +214,19 @@
         .thanks {
             margin-top: 2px;
             text-align: center;
-            font-size: 9px;
+            font-size: 8px;
             font-weight: 800;
             line-height: 1.2;
         }
 
-        .thanks .ar {
+        .items th,
+        .small[dir="rtl"],
+        .thanks[dir="rtl"] {
             direction: rtl;
-            font-size: 9px;
-            display: block;
             text-align: center;
         }
 
-        .items th span[dir="rtl"],
-        .small div[dir="rtl"] {
+        .items th span[dir="rtl"] {
             display: block;
             text-align: center;
             line-height: 1;
@@ -245,6 +251,23 @@
             cursor: pointer;
         }
 
+        /* Samakan ukuran seluruh teks nota seperti ukuran nomor telepon */
+        .receipt,
+        .receipt * {
+            font-size: 6px !important;
+            line-height: 1.2;
+        }
+
+        .receipt .name {
+            font-size: 14px !important;
+            line-height: 1.1;
+        }
+
+        .receipt .name-sub {
+            font-size: 11px !important;
+            line-height: 1.1;
+        }
+
         @media print {
             @page {
                 size: auto;
@@ -256,7 +279,7 @@
                 padding: 0;
                 width: 100%;
                 margin: 0;
-                font-size: 18px;
+                font-size: 16px;
                 line-height: 1.15;
             }
 
@@ -278,11 +301,11 @@
             }
 
             .name {
-                font-size: 22px;
+                font-size: 19px;
             }
 
             .name-sub {
-                font-size: 16px;
+                font-size: 13px;
             }
 
             .divider {
@@ -292,7 +315,7 @@
             .meta,
             .section-title,
             .items {
-                font-size: 18px;
+                font-size: 15px;
             }
 
             .meta td {
@@ -309,7 +332,7 @@
             .small,
             .total .ar,
             .thanks .ar {
-                font-size: 15px;
+                font-size: 12px;
             }
 
             .section-title {
@@ -317,7 +340,7 @@
             }
 
             .items th {
-                font-size: 16px;
+                font-size: 13px;
             }
 
             .items th,
@@ -326,23 +349,40 @@
             }
 
             .total {
-                font-size: 18px;
+                font-size: 15px;
                 margin-top: 3px;
             }
 
             .phones {
-                font-size: 15px;
+                font-size: 9px;
                 margin-top: 2px;
                 white-space: nowrap;
             }
 
             .thanks {
-                font-size: 15px;
+                font-size: 12px;
                 margin-top: 2px;
             }
 
             .actions {
                 display: none;
+            }
+
+            /* Saat print, samakan ukuran seluruh teks nota seperti nomor telepon print */
+            .receipt,
+            .receipt * {
+                font-size: 9px !important;
+                line-height: 1.15;
+            }
+
+            .receipt .name {
+                font-size: 20px !important;
+                line-height: 1.1;
+            }
+
+            .receipt .name-sub {
+                font-size: 14px !important;
+                line-height: 1.1;
             }
         }
     </style>
@@ -432,10 +472,10 @@
         <table class="items">
             <thead>
                 <tr>
-                    <th style="width: 48%;">Item<br><span dir="rtl">الصنف</span></th>
-                    <th style="width: 14%;">Qty<br><span dir="rtl">الكمية</span></th>
-                    <th style="width: 19%;">Price<br><span dir="rtl">السعر</span></th>
-                    <th style="width: 19%;">Total<br><span dir="rtl">القيمة</span></th>
+                    <th style="width: 48%;">الصنف</th>
+                    <th style="width: 14%;">الكمية</th>
+                    <th style="width: 19%;">السعر</th>
+                    <th style="width: 19%;">القيمة</th>
                 </tr>
             </thead>
             <tbody>
@@ -446,10 +486,7 @@
                     @endphp
                     <tr>
                         <td>
-                            <div class="item-name-en">{{ $item->menu_name_en ?? $item->menu_name }}</div>
-                            @if(!empty($item->menu_name_ar) && $item->menu_name_ar !== ($item->menu_name_en ?? $item->menu_name))
-                                <div class="item-name-ar">{{ $item->menu_name_ar }}</div>
-                            @endif
+                            <div class="item-name-main">{{ $item->menu_name_ar ?: ($item->menu_name_en ?? $item->menu_name) }}</div>
                         </td>
                         <td class="num">{{ $qty }}</td>
                         <td class="num">{{ number_format($unitPrice, 2) }}</td>
@@ -469,10 +506,7 @@
 
         <div class="divider"></div>
 
-        <div class="small center">
-            Contact Us
-            <div dir="rtl">تواصل معنا</div>
-        </div>
+        <div class="small center" dir="rtl">تواصل معنا</div>
 
         <div class="phones">
             @if(!empty($receiptData['phone_numbers']))
@@ -486,10 +520,7 @@
             {{ $receiptData['full_address'] }}
         </div>
 
-        <div class="thanks">
-            {{ $receiptData['thank_you_message'] }}
-            <div class="ar">شكرا لزيارتكم</div>
-        </div>
+        <div class="thanks" dir="rtl">شكرا لزيارتكم</div>
     </div>
 
     <div class="actions">
