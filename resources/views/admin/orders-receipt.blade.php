@@ -19,11 +19,12 @@
 
         body {
             margin: 0;
-            padding: 16px;
+            padding: 12px;
             font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-            font-size: 14px;
+            font-size: 11px;
             color: var(--text-color);
             background: #f1f1f1;
+            line-height: 1.2;
         }
 
         .receipt {
@@ -35,90 +36,119 @@
             border: 1px solid #ddd;
         }
 
-        .center {
-            text-align: center;
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 2px 0;
         }
 
         .logo {
-            width: 96px;
+            width: 44px;
             height: auto;
-            margin-bottom: 6px;
+            flex-shrink: 0;
+        }
+
+        .header-text {
+            flex: 0 0 auto;
         }
 
         .name {
             margin: 0;
-            font-size: 24px;
+            font-size: 13px;
             font-weight: 800;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.4px;
+            line-height: 1.1;
         }
 
         .name-sub {
-            margin: 2px 0 8px;
-            font-size: 16px;
+            margin: 1px 0 0;
+            font-size: 10px;
             font-weight: 700;
             letter-spacing: 1px;
+            color: var(--muted);
+        }
+
+        .center {
+            text-align: center;
         }
 
         .divider {
             border-top: 1px dashed var(--line);
-            margin: 8px 0;
+            margin: 3px 0;
         }
 
         .meta {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
+            font-size: 10px;
         }
 
         .meta td {
-            padding: 3px 0;
-            vertical-align: top;
+            padding: 0;
+            vertical-align: middle;
+            line-height: 1.3;
+        }
+
+        .meta td:first-child {
+            width: 34%;
+            text-align: left;
         }
 
         .meta td:nth-child(2) {
+            width: 28%;
+            text-align: center;
+        }
+
+        .meta td:nth-child(3) {
+            width: 38%;
             text-align: right;
             font-weight: 700;
         }
 
-        .meta .ar {
-            display: block;
+        .meta .meta-ar {
             direction: rtl;
-            font-size: 12px;
+            font-size: 9px;
             color: var(--muted);
+            text-align: center;
+            line-height: 1;
         }
 
         .section-title {
-            font-size: 14px;
+            font-size: 10px;
             font-weight: 800;
             text-align: center;
-            margin: 6px 0;
+            margin: 2px 0;
+            line-height: 1.2;
         }
 
         .section-title .ar {
             display: block;
             direction: rtl;
-            font-size: 12px;
+            font-size: 9px;
             color: var(--muted);
-            margin-top: 2px;
+            text-align: center;
         }
 
         .items {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 6px;
-            font-size: 14px;
+            margin-top: 3px;
+            font-size: 10px;
         }
 
         .items th,
         .items td {
             border: 1px solid #000;
-            padding: 5px;
+            padding: 2px 3px;
             vertical-align: top;
         }
 
         .items th {
-            font-size: 13px;
+            font-size: 9px;
             text-align: center;
+            line-height: 1.2;
         }
 
         .items td.num {
@@ -132,52 +162,68 @@
 
         .item-name-ar {
             direction: rtl;
-            font-size: 12px;
+            font-size: 9px;
             color: var(--muted);
-            margin-top: 1px;
+            margin-top: 0;
+            line-height: 1.1;
+            text-align: center;
         }
 
         .total {
-            margin-top: 6px;
+            margin-top: 3px;
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            font-size: 18px;
+            font-size: 10px;
             font-weight: 800;
+            line-height: 1.2;
         }
 
         .total .ar {
             direction: rtl;
-            font-size: 14px;
+            font-size: 8px;
             color: var(--muted);
             font-weight: 700;
+            text-align: center;
         }
 
         .small {
-            font-size: 13px;
+            font-size: 9px;
             color: var(--muted);
+            text-align: center;
+            line-height: 1.2;
         }
 
         .phones {
             text-align: center;
-            font-size: 15px;
+            font-size: 9px;
             font-weight: 700;
-            margin-top: 5px;
-            line-height: 1.4;
-            word-break: break-word;
+            margin-top: 1px;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .thanks {
-            margin-top: 8px;
+            margin-top: 2px;
             text-align: center;
-            font-size: 15px;
+            font-size: 9px;
             font-weight: 800;
+            line-height: 1.2;
         }
 
         .thanks .ar {
             direction: rtl;
-            font-size: 13px;
-            margin-top: 2px;
+            font-size: 9px;
+            display: block;
+            text-align: center;
+        }
+
+        .items th span[dir="rtl"],
+        .small div[dir="rtl"] {
+            display: block;
+            text-align: center;
+            line-height: 1;
         }
 
         .actions {
@@ -210,6 +256,8 @@
                 padding: 0;
                 width: 100%;
                 margin: 0;
+                font-size: 18px;
+                line-height: 1.15;
             }
 
             .receipt {
@@ -217,29 +265,42 @@
                 max-width: none;
                 width: 100%;
                 margin: 0;
-                padding: 8mm;
+                padding: 3mm;
+            }
+
+            .header {
+                justify-content: center;
+                gap: 8px;
             }
 
             .logo {
-                width: 44mm;
+                width: 18mm;
             }
 
             .name {
-                font-size: 58px;
+                font-size: 22px;
             }
 
             .name-sub {
-                font-size: 34px;
+                font-size: 16px;
             }
 
             .divider {
-                margin: 16px 0;
+                margin: 4px 0;
             }
 
             .meta,
             .section-title,
             .items {
-                font-size: 27px;
+                font-size: 18px;
+            }
+
+            .meta td {
+                padding: 0;
+            }
+
+            .meta td:first-child {
+                text-align: left;
             }
 
             .meta .ar,
@@ -248,25 +309,36 @@
             .small,
             .total .ar,
             .thanks .ar {
-                font-size: 22px;
+                font-size: 15px;
+            }
+
+            .section-title {
+                margin: 2px 0;
             }
 
             .items th {
-                font-size: 24px;
+                font-size: 16px;
             }
 
             .items th,
             .items td {
-                padding: 12px;
+                padding: 4px 5px;
             }
 
             .total {
-                font-size: 46px;
+                font-size: 18px;
+                margin-top: 3px;
             }
 
-            .phones,
+            .phones {
+                font-size: 15px;
+                margin-top: 2px;
+                white-space: nowrap;
+            }
+
             .thanks {
-                font-size: 34px;
+                font-size: 15px;
+                margin-top: 2px;
             }
 
             .actions {
@@ -277,48 +349,40 @@
 </head>
 <body>
     <div class="receipt">
-        <div class="center">
+        <div class="header">
             <img class="logo" src="{{ $receiptData['logo_url'] }}" alt="Restaurant Logo">
-            <h1 class="name">{{ $receiptData['restaurant_name'] }}</h1>
-            <div class="name-sub">CAFE</div>
+            <div class="header-text">
+                <h1 class="name">{{ $receiptData['restaurant_name'] }}</h1>
+                <div class="name-sub">CAFE</div>
+            </div>
         </div>
 
         <div class="divider"></div>
 
         <table class="meta">
             <tr>
-                <td>
-                    Order No
-                    <span class="ar">رقم الطلب</span>
-                </td>
+                <td>Order No</td>
+                <td class="meta-ar">رقم الطلب</td>
                 <td>#{{ $order->order_sequence ?? $order->id }}</td>
             </tr>
             <tr>
-                <td>
-                    Date
-                    <span class="ar">التاريخ</span>
-                </td>
+                <td>Date</td>
+                <td class="meta-ar">التاريخ</td>
                 <td>{{ $order->created_at->format('Y/m/d') }}</td>
             </tr>
             <tr>
-                <td>
-                    Time
-                    <span class="ar">الوقت</span>
-                </td>
+                <td>Time</td>
+                <td class="meta-ar">الوقت</td>
                 <td>{{ $order->created_at->format('H:i:s') }}</td>
             </tr>
             <tr>
-                <td>
-                    Cashier
-                    <span class="ar">الكاشير</span>
-                </td>
+                <td>Cashier</td>
+                <td class="meta-ar">الكاشير</td>
                 <td>{{ $receiptData['cashier_name'] }}</td>
             </tr>
             <tr>
-                <td>
-                    Table No
-                    <span class="ar">الترابيزة</span>
-                </td>
+                <td>Table No</td>
+                <td class="meta-ar">الترابيزة</td>
                 <td>{{ $receiptData['table_number'] ?: '-' }}</td>
             </tr>
         </table>
@@ -333,31 +397,23 @@
 
             <table class="meta">
                 <tr>
-                    <td>
-                        Name
-                        <span class="ar">الاسم</span>
-                    </td>
+                    <td>Name</td>
+                    <td class="meta-ar">الاسم</td>
                     <td>{{ $order->online_customer_name ?: ($order->customer?->first_name ?? '-') }}</td>
                 </tr>
                 <tr>
-                    <td>
-                        Phone
-                        <span class="ar">رقم الهاتف</span>
-                    </td>
+                    <td>Phone</td>
+                    <td class="meta-ar">رقم الهاتف</td>
                     <td>{{ $order->online_customer_phone ?: ($order->customer?->phone_number ?? '-') }}</td>
                 </tr>
                 <tr>
-                    <td>
-                        Address
-                        <span class="ar">العنوان</span>
-                    </td>
+                    <td>Address</td>
+                    <td class="meta-ar">العنوان</td>
                     <td>{{ $order->online_delivery_address ?: ($order->deliveryAddressWithTrashed?->full_address ?? '-') }}</td>
                 </tr>
                 <tr>
-                    <td>
-                        Payment
-                        <span class="ar">الدفع</span>
-                    </td>
+                    <td>Payment</td>
+                    <td class="meta-ar">الدفع</td>
                     <td>
                         @php
                             $paymentLabel = strtoupper(str_replace('_', ' ', (string) $order->payment_method));
