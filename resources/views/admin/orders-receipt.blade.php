@@ -254,17 +254,17 @@
         /* Samakan ukuran seluruh teks nota seperti ukuran nomor telepon */
         .receipt,
         .receipt * {
-            font-size: 6px !important;
+            font-size: 11px !important;
             line-height: 1.2;
         }
 
         .receipt .name {
-            font-size: 14px !important;
+            font-size: 15px !important;
             line-height: 1.1;
         }
 
         .receipt .name-sub {
-            font-size: 11px !important;
+            font-size: 12px !important;
             line-height: 1.1;
         }
 
@@ -371,17 +371,17 @@
             /* Saat print, samakan ukuran seluruh teks nota seperti nomor telepon print */
             .receipt,
             .receipt * {
-                font-size: 9px !important;
+                font-size: 14px !important;
                 line-height: 1.15;
             }
 
             .receipt .name {
-                font-size: 20px !important;
+                font-size: 21px !important;
                 line-height: 1.1;
             }
 
             .receipt .name-sub {
-                font-size: 14px !important;
+                font-size: 15px !important;
                 line-height: 1.1;
             }
         }
