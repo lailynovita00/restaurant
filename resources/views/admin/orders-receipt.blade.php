@@ -393,6 +393,10 @@
                 font-size: 15px !important;
                 line-height: 1.1;
             }
+
+            .receipt .phones {
+                font-size: 11px !important;
+            }
         }
     </style>
 </head>
